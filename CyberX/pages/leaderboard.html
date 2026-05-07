@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Leaderboard — CyberX</title>
+  <link rel="stylesheet" href="../styles/variables.css"/>
+  <link rel="stylesheet" href="../styles/base.css"/>
+  <link rel="stylesheet" href="../styles/base.css"/>
+  <link rel="stylesheet" href="../styles/components.css"/>
+  <style>
+  .lb-hero { background:var(--bg-0); border-bottom:1px solid var(--border); padding:56px 0 40px; }
+  .lb-hero__inner { display:flex; align-items:flex-end; justify-content:space-between; gap:32px; flex-wrap:wrap; }
+  .lb-title { font-family:var(--font-serif); font-size:clamp(40px,5vw,68px); color:var(--text-1); line-height:1.05; }
+  .lb-title .accent { color:var(--neon-green); font-style:italic; }
+  .lb-sub { font-size:15px; color:var(--text-2); margin-top:12px; }
+  .lb-stat { text-align:right; }
+  .lb-stat .val { font-family:var(--font-serif); font-size:48px; color:var(--neon-green); }
+  .lb-stat .lbl { font-family:var(--font-mono); font-size:11px; color:var(--text-3); letter-spacing:2px; text-transform:uppercase; }
+  .lb-tabs { display:flex; gap:4px; padding:24px 0 0; }
+  .lb-tab { font-family:var(--font-mono); font-size:13px; padding:8px 18px; border-radius:var(--radius); border:1px solid transparent; color:var(--text-3); cursor:pointer; transition:all 0.15s; }
+  .lb-tab:hover { color:var(--text-1); background:rgba(255,255,255,0.04); }
+  .lb-tab.active { color:var(--text-1); background:rgba(255,255,255,0.06); border-color:var(--border-2); }
+  .lb-table-wrap { background:var(--bg-0); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden; margin-top:32px; }
+  .lb-table { width:100%; border-collapse:collapse; }
+  .lb-table thead th { padding:14px 20px; font-family:var(--font-mono); font-size:10px; color:var(--text-3); letter-spacing:2px; text-transform:uppercase; border-bottom:1px solid var(--border); text-align:left; font-weight:500; }
+  .lb-table tbody tr { border-bottom:1px solid var(--border); transition:background 0.15s; cursor:pointer; }
+  .lb-table tbody tr:last-child { border-bottom:none; }
+  .lb-table tbody tr:hover { background:rgba(255,255,255,0.02); }
+  .lb-table tbody td { padding:14px 20px; font-size:14px; color:var(--text-2); }
+  .lb-table .rank { font-family:var(--font-mono); font-size:14px; font-weight:600; width:50px; }
+  .lb-table .rank.gold   { color:#fbbf24; }
+  .lb-table .rank.silver { color:#94a3b8; }
+  .lb-table .rank.bronze { color:#d97706; }
+  .lb-avatar { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:600; }
+  .lb-name { font-weight:500; color:var(--text-1); }
+  .lb-handle { font-family:var(--font-mono); font-size:12px; color:var(--text-3); }
+  .lb-pts { font-family:var(--font-mono); font-size:14px; font-weight:600; color:var(--neon-green); }
+  .lb-solved { font-family:var(--font-mono); font-size:13px; }
+  .lb-cert { font-family:var(--font-mono); font-size:11px; letter-spacing:1px; }
+  .podium { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:32px; }
+  .podium-card { background:var(--bg-2); border:1px solid var(--border); border-radius:var(--radius-lg); padding:28px 24px; text-align:center; }
+  .podium-card.first { border-color:rgba(251,191,36,0.3); background:rgba(251,191,36,0.03); }
+  .podium-card.second{ border-color:rgba(148,163,184,0.3); }
+  .podium-card.third { border-color:rgba(217,119,6,0.3); }
+  .podium-rank { font-family:var(--font-serif); font-size:40px; margin-bottom:12px; }
+  .podium-avatar { width:56px; height:56px; border-radius:50%; margin:0 auto 12px; display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:700; }
+  .podium-name { font-size:15px; font-weight:600; color:var(--text-1); margin-bottom:4px; }
+  .podium-handle { font-family:var(--font-mono); font-size:12px; color:var(--text-3); margin-bottom:12px; }
+  .podium-pts { font-family:var(--font-mono); font-size:20px; font-weight:700; color:var(--neon-green); }
+  @media(max-width:768px){ .podium{grid-template-columns:1fr} }
+  </style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+<div class="ticker-bar">
+  <div class="ticker-bar__left"><span>LEADERBOARD</span><span style="color:var(--border-2)">·</span><span>SEASON IV</span><span style="color:var(--border-2)">·</span><span>GLOBAL RANKINGS</span></div>
+  <div><span class="ticker-bar__season"><span class="dot-live"></span> LIVE UPDATES</span></div>
+</div>
+
+<section class="lb-hero">
+  <div class="container">
+    <div class="lb-hero__inner">
+      <div>
+        <h1 class="lb-title">Global<br><span class="accent">Rankings.</span></h1>
+        <p class="lb-sub">Season IV · 4,820 competitors · 12 days remaining</p>
+      </div>
+      <div class="lb-stat">
+        <div class="val">4,820</div>
+        <div class="lbl">Active competitors</div>
+      </div>
+    </div>
+    <div class="lb-tabs">
+      <button class="lb-tab active">Season IV</button>
+      <button class="lb-tab">All Time</button>
+      <button class="lb-tab">Monthly</button>
+      <button class="lb-tab">Bug Bounty</button>
+    </div>
+  </div>
+</section>
+
+<section style="padding:48px 0 80px">
+  <div class="container">
+    <!-- Podium -->
+    <div class="podium">
+      <div class="podium-card second">
+        <div class="podium-rank">🥈</div>
+        <div class="podium-avatar" style="background:#1a2030;color:#94a3b8">KM</div>
+        <div class="podium-name">Katsuki Mori</div>
+        <div class="podium-handle">@nullbyte_kat</div>
+        <div class="podium-pts">12,840 pts</div>
+        <div style="margin-top:8px"><span class="badge badge-blue">62 solves</span></div>
+      </div>
+      <div class="podium-card first">
+        <div class="podium-rank">🥇</div>
+        <div class="podium-avatar" style="background:#1a3040;color:#fbbf24">PN</div>
+        <div class="podium-name">Priya Nair</div>
+        <div class="podium-handle">@r00t_runner</div>
+        <div class="podium-pts">15,420 pts</div>
+        <div style="margin-top:8px"><span class="badge badge-green">OSCP</span></div>
+      </div>
+      <div class="podium-card third">
+        <div class="podium-avatar" style="background:#1e2040;color:#d97706;margin-top:52px">EV</div>
+        <div class="podium-rank">🥉</div>
+        <div class="podium-name">Elena Vasquez</div>
+        <div class="podium-handle">@xor_elena</div>
+        <div class="podium-pts">11,200 pts</div>
+        <div style="margin-top:8px"><span class="badge badge-orange">0→CTF</span></div>
+      </div>
+    </div>
+
+    <!-- Full table -->
+    <div class="lb-table-wrap">
+      <table class="lb-table">
+        <thead>
+          <tr><th style="width:60px">RANK</th><th>COMPETITOR</th><th>CERT</th><th>SOLVES</th><th>POINTS</th><th>LAST SOLVE</th></tr>
+        </thead>
+        <tbody id="lbBody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+<script src="../components/layout.js"></script>
+<script>
+initLayout('Leaderboard');
+const players=[
+  {rank:1,init:'PN',name:'Priya Nair',handle:'@r00t_runner',cert:'OSCP',solves:74,pts:15420,last:'2h ago',bg:'#1a3040',col:'#fbbf24'},
+  {rank:2,init:'KM',name:'Katsuki Mori',handle:'@nullbyte_kat',cert:'#7',solves:62,pts:12840,last:'5h ago',bg:'#1a3020',col:'#4ade80'},
+  {rank:3,init:'EV',name:'Elena Vasquez',handle:'@xor_elena',cert:'0→CTF',solves:58,pts:11200,last:'1d ago',bg:'#1e2040',col:'#a78bfa'},
+  {rank:4,init:'MO',name:'Marcus Osei',handle:'@ghostshell_dev',cert:'Bug Bounty',solves:47,pts:9800,last:'3h ago',bg:'#2a1e10',col:'#f97316'},
+  {rank:5,init:'SL',name:'Sara Lindqvist',handle:'@redteam_sara',cert:'AD',solves:43,pts:8640,last:'12h ago',bg:'#182030',col:'#22d3ee'},
+  {rank:6,init:'AK',name:'Alex Kim',handle:'@0xalchemy',cert:'',solves:38,pts:7200,last:'1d ago',bg:'#1a2820',col:'#4ade80'},
+  {rank:7,init:'RB',name:'Riya Bhatt',handle:'@shellcraft',cert:'OSCP',solves:35,pts:6800,last:'2d ago',bg:'#201828',col:'#a78bfa'},
+  {rank:8,init:'JW',name:'Jin Wei',handle:'@pwn_jin',cert:'',solves:31,pts:5900,last:'3d ago',bg:'#182028',col:'#60a5fa'},
+  {rank:9,init:'TR',name:'Tomás Reyes',handle:'@t3ch_r3d',cert:'',solves:28,pts:5200,last:'1d ago',bg:'#201a14',col:'#f97316'},
+  {rank:142,init:'ME',name:'You',handle:'@you',cert:'',solves:12,pts:3840,last:'Just now',bg:'#1a2838',col:'#60a5fa'},
+];
+const rankCls=(r)=>r===1?'gold':r===2?'silver':r===3?'bronze':'';
+document.getElementById('lbBody').innerHTML=players.map(p=>`
+  <tr>
+    <td class="rank ${rankCls(p.rank)}">${p.rank===142?'...':''}<br>${p.rank}</td>
+    <td>
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="lb-avatar" style="background:${p.bg};color:${p.col}">${p.init}</div>
+        <div>
+          <div class="lb-name">${p.name}</div>
+          <div class="lb-handle">${p.handle}</div>
+        </div>
+      </div>
+    </td>
+    <td class="lb-cert" style="color:${p.cert?'var(--text-2)':'var(--text-dim)'}">${p.cert||'—'}</td>
+    <td class="lb-solved" style="color:var(--neon-blue)">${p.solves}</td>
+    <td class="lb-pts">${p.pts.toLocaleString()}</td>
+    <td style="font-family:var(--font-mono);font-size:12px;color:var(--text-3)">${p.last}</td>
+  </tr>
+`).join('');
+</script>
+</body>
+</html>

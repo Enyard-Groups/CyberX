@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Codex — CyberX</title>
+  <link rel="stylesheet" href="../styles/variables.css"/>
+  <link rel="stylesheet" href="../styles/base.css"/>
+  <link rel="stylesheet" href="../styles/base.css"/>
+  <link rel="stylesheet" href="../styles/components.css"/>
+  <style>
+  .codex-hero { background:var(--bg-0); border-bottom:1px solid var(--border); padding:56px 0 48px; }
+  .codex-hero__title { font-family:var(--font-serif); font-size:clamp(44px,6vw,76px); line-height:1.05; color:var(--text-1); margin-bottom:20px; }
+  .codex-hero__title .accent { color:var(--neon-blue); font-style:italic; }
+  .codex-hero__desc { font-size:16px; color:var(--text-2); max-width:540px; line-height:1.7; margin-bottom:32px; }
+  .codex-search { display:flex; max-width:620px; border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; background:rgba(255,255,255,0.02); }
+  .codex-search__prefix { padding:0 16px; font-family:var(--font-mono); font-size:13px; color:var(--text-3); border-right:1px solid var(--border); display:flex; align-items:center; }
+  .codex-search input { flex:1; background:transparent; border:none; outline:none; padding:13px 16px; font-family:var(--font-mono); font-size:14px; color:var(--text-1); }
+  .codex-search input::placeholder { color:var(--text-3); }
+  .codex-search button { padding:0 24px; background:var(--neon-blue); color:#fff; font-family:var(--font-mono); font-size:12px; font-weight:600; letter-spacing:1px; border:none; cursor:pointer; }
+  .codex-search button:hover { background:#3b82f6; }
+  .codex-layout { display:grid; grid-template-columns:240px 1fr; min-height:80vh; }
+  .codex-sidebar { border-right:1px solid var(--border); padding:28px 0; position:sticky; top:var(--nav-h); height:calc(100vh - var(--nav-h)); overflow-y:auto; }
+  .codex-sidebar__label { font-family:var(--font-mono); font-size:10px; color:var(--text-3); letter-spacing:2px; text-transform:uppercase; padding:0 24px; margin-bottom:12px; }
+  .codex-sidebar__item { padding:9px 24px; font-size:13.5px; color:var(--text-2); cursor:pointer; border-left:2px solid transparent; transition:all 0.15s; display:flex; align-items:center; justify-content:space-between; }
+  .codex-sidebar__item:hover { color:var(--text-1); background:rgba(255,255,255,0.02); }
+  .codex-sidebar__item.active { color:var(--text-1); border-left-color:var(--neon-blue); background:rgba(96,165,250,0.04); }
+  .codex-sidebar__item .cnt { font-family:var(--font-mono); font-size:11px; color:var(--text-3); }
+  .codex-content { padding:36px 48px; }
+  .codex-section-title { font-family:var(--font-mono); font-size:10px; color:var(--text-3); letter-spacing:2.5px; text-transform:uppercase; margin-bottom:20px; padding-bottom:12px; border-bottom:1px solid var(--border); }
+  .codex-entries { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-bottom:40px; }
+  .codex-entry { background:var(--bg-2); border:1px solid var(--border); border-radius:var(--radius-lg); padding:20px; cursor:pointer; transition:border-color 0.15s, box-shadow 0.15s; }
+  .codex-entry:hover { border-color:var(--border-2); box-shadow:0 4px 20px rgba(0,0,0,0.3); }
+  .codex-entry__num { font-family:var(--font-mono); font-size:11px; color:var(--text-3); margin-bottom:8px; }
+  .codex-entry__title { font-size:15px; color:var(--text-1); font-weight:500; margin-bottom:6px; }
+  .codex-entry__desc { font-size:12px; color:var(--text-2); line-height:1.6; margin-bottom:12px; }
+  .codex-entry__footer { display:flex; gap:6px; align-items:center; }
+  @media(max-width:900px){ .codex-layout{grid-template-columns:1fr} .codex-sidebar{display:none} .codex-entries{grid-template-columns:1fr} .codex-content{padding:24px 16px} }
+  </style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+<div class="ticker-bar">
+  <div class="ticker-bar__left"><span>ENCYCLOPAEDIA CYBERNETICA</span><span style="color:var(--border-2)">·</span><span>VOLUME XII</span><span style="color:var(--border-2)">·</span><span>DIGITAL SECURITY SCIENCES</span></div>
+  <div style="display:flex;gap:16px"><span class="ticker-bar__season">CTF SEASON IV</span><span style="font-family:var(--font-mono);font-size:11px;color:var(--text-3)">OSCP · PWNDBG · FORENSICS · REVERSE ENG.</span></div>
+</div>
+
+<section class="codex-hero">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 420px;gap:64px;align-items:start">
+      <div>
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-3);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px">— THE DEFINITIVE REFERENCE</div>
+        <h1 class="codex-hero__title">Master the Art of<br><span class="accent">Cybersecurity —</span><br>From First Principles.</h1>
+        <p class="codex-hero__desc">Live lectures, capture-the-flag arenas, and a complete <strong>indexed compendium</strong> of offensive &amp; defensive security disciplines — curated for curious minds of <span style="color:var(--neon-green)">every background.</span></p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+          <button class="diff-btn active" style="font-family:var(--font-mono);font-size:12px;padding:5px 13px;border-radius:4px;border:1px solid rgba(255,255,255,0.12);color:var(--text-1);background:rgba(255,255,255,0.06);cursor:pointer">⊕ All</button>
+          <button class="diff-btn" style="font-family:var(--font-mono);font-size:12px;padding:5px 13px;border-radius:4px;border:1px solid var(--border);color:var(--text-3);background:transparent;cursor:pointer"># Codex</button>
+          <button class="diff-btn" style="font-family:var(--font-mono);font-size:12px;padding:5px 13px;border-radius:4px;border:1px solid var(--border);color:var(--text-3);background:transparent;cursor:pointer">▶ Lectures</button>
+          <button class="diff-btn" style="font-family:var(--font-mono);font-size:12px;padding:5px 13px;border-radius:4px;border:1px solid var(--border);color:var(--text-3);background:transparent;cursor:pointer">⚑ CTF</button>
+          <button class="diff-btn" style="font-family:var(--font-mono);font-size:12px;padding:5px 13px;border-radius:4px;border:1px solid var(--border);color:var(--text-3);background:transparent;cursor:pointer">○ Labs</button>
+        </div>
+        <div class="codex-search">
+          <div class="codex-search__prefix">~/nexus $</div>
+          <input type="text" placeholder="search the codex…" id="codexSearch"/>
+          <button>QUERY</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:24px">
+          <a href="../pages/lectures.html" class="btn btn-green btn-lg">→ Start Learning</a>
+          <a href="../pages/lectures.html" class="btn btn-outline btn-lg">○ View Live Lectures</a>
+          <span style="font-family:var(--font-mono);font-size:12px;color:var(--text-3)">Free to explore · No account needed</span>
+        </div>
+      </div>
+      <!-- Terminal -->
+      <div class="terminal" style="animation:float 6s ease-in-out infinite">
+        <div class="terminal__bar">
+          <div class="terminal__dots"><span class="terminal__dot r" style="width:12px;height:12px;border-radius:50%;background:#f87171;display:inline-block"></span><span class="terminal__dot y" style="width:12px;height:12px;border-radius:50%;background:#fbbf24;display:inline-block;margin:0 6px"></span><span class="terminal__dot g" style="width:12px;height:12px;border-radius:50%;background:#4ade80;display:inline-block"></span></div>
+          <div class="terminal__title">nexus@codex:~</div>
+        </div>
+        <div class="terminal__body" style="font-family:var(--font-mono);font-size:12.5px;line-height:1.9;padding:22px">
+          <div style="color:var(--text-3)"># Welcome to CyberX v4.2.1</div><br>
+          <div style="color:var(--neon-blue)">&gt; nexus search "sql injection"</div>
+          <div style="color:var(--text-3)">// Codex — 14 entries found</div>
+          <div style="color:var(--neon-blue)">&nbsp;&nbsp;[01] SQLi Fundamentals · <span style="color:var(--text-3)">Beginner</span></div>
+          <div style="color:var(--neon-blue)">&nbsp;&nbsp;[02] Blind SQLi &amp; OAST · <span style="color:var(--text-3)">Intermediate</span></div>
+          <div style="color:var(--neon-blue)">&nbsp;&nbsp;[03] SQLMap &amp; Automation · <span style="color:var(--text-3)">Advanced</span></div>
+          <div style="color:var(--neon-blue)">&nbsp;&nbsp;[CTF] Injection Gauntlet · <span style="color:var(--text-3)">Season IV</span></div><br>
+          <div style="color:var(--neon-blue)">&gt; nexus lecture --live</div>
+          <div>&nbsp;&nbsp;<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--neon-green);animation:pulse 2s infinite"></span> <span style="color:var(--neon-blue)">Web App Pentesting 101</span></div>
+          <div style="color:var(--text-3)">&nbsp;&nbsp;Started 12 min ago · 284 watching</div><br>
+          <div style="color:var(--neon-blue)">&gt; <span style="display:inline-block;width:8px;height:14px;background:var(--neon-blue);animation:blink 1s step-end infinite;vertical-align:middle"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div style="display:flex;max-width:var(--max-w);margin:0 auto">
+  <!-- Sidebar -->
+  <div class="codex-sidebar">
+    <div class="codex-sidebar__label">Categories</div>
+    <div id="codexSidebar"></div>
+  </div>
+  <!-- Content -->
+  <div class="codex-content" style="flex:1">
+    <div id="codexSections"></div>
+  </div>
+</div>
+
+<div id="footer-placeholder"></div>
+<script src="../components/layout.js"></script>
+<script>
+initLayout('Codex');
+const cats=[
+  {label:'Web Security',count:86,active:true},
+  {label:'Binary Exploitation',count:54},
+  {label:'Forensics & DFIR',count:38},
+  {label:'Reverse Engineering',count:47},
+  {label:'Active Directory',count:29},
+  {label:'Cryptography',count:41},
+  {label:'Network Security',count:63},
+  {label:'Malware Analysis',count:22},
+  {label:'OSCP Prep Paths',count:15},
+  {label:'Social Engineering',count:11},
+];
+document.getElementById('codexSidebar').innerHTML=cats.map((c,i)=>`
+  <div class="codex-sidebar__item${c.active?' active':''}" onclick="this.parentElement.querySelectorAll('div').forEach(x=>x.classList.remove('active'));this.classList.add('active')">
+    <span>${c.label}</span><span class="cnt">${c.count}</span>
+  </div>`).join('');
+
+const sections=[
+  { title:'WEB SECURITY — SQL INJECTION',
+    entries:[
+      {num:'[01]',title:'SQLi Fundamentals',desc:'Error-based, union-based, and blind injection techniques from first principles.',tags:['Beginner','Web']},
+      {num:'[02]',title:'Blind SQLi & OAST',desc:'Time-based and out-of-band techniques for extracting data without visible output.',tags:['Intermediate','Web']},
+      {num:'[03]',title:'SQLMap & Automation',desc:'Using SQLMap effectively, tamper scripts, WAF bypass, and custom injection strings.',tags:['Advanced','Web']},
+      {num:'[CTF]',title:'Injection Gauntlet',desc:'Season IV CTF — multi-stage SQLi challenge with modern defenses.',tags:['CTF','Season IV']},
+    ]},
+  { title:'WEB SECURITY — AUTHENTICATION BYPASS',
+    entries:[
+      {num:'[01]',title:'JWT Attacks',desc:'Algorithm confusion, none algorithm, and key confusion attacks against JSON Web Tokens.',tags:['Intermediate','Web']},
+      {num:'[02]',title:'OAuth 2.0 Abuse',desc:'Open redirect chains, CSRF on authorization flow, and token leakage techniques.',tags:['Advanced','Web']},
+    ]},
+];
+document.getElementById('codexSections').innerHTML=sections.map(s=>`
+  <div style="margin-bottom:40px">
+    <div class="codex-section-title">${s.title}</div>
+    <div class="codex-entries">
+      ${s.entries.map(e=>`
+        <div class="codex-entry">
+          <div class="codex-entry__num">${e.num}</div>
+          <div class="codex-entry__title">${e.title}</div>
+          <div class="codex-entry__desc">${e.desc}</div>
+          <div class="codex-entry__footer">
+            ${e.tags.map(t=>`<span class="badge badge-gray">${t}</span>`).join('')}
+          </div>
+        </div>`).join('')}
+    </div>
+  </div>`).join('');
+</script>
+</body>
+</html>

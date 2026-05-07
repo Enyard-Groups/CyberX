@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Lectures — CyberX</title>
+  <link rel="stylesheet" href="../styles/variables.css"/>
+  <link rel="stylesheet" href="../styles/base.css"/>
+  <link rel="stylesheet" href="../styles/base.css"/>
+  <link rel="stylesheet" href="../styles/components.css"/>
+  <link rel="stylesheet" href="../styles/pages/lectures.css"/>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+
+<!-- Hero -->
+<div class="lectures-hero" style="background:var(--bg-0)">
+  <div class="container">
+    <div class="lectures-hero__top">
+      <div>
+        <h1 class="lectures-hero__title">
+          Learn by doing.<br>
+          <span class="accent">Every discipline covered.</span>
+        </h1>
+        <p class="lectures-hero__sub">94 lectures across 40+ security domains — from beginner to advanced.</p>
+      </div>
+      <div class="lectures-hero__live">
+        <div class="lectures-hero__live-count">
+          <span class="dot-live"></span> <strong>8 lectures</strong>&nbsp; streaming live right now
+        </div>
+        <div class="lectures-hero__catalog-btn">View full catalog →</div>
+      </div>
+    </div>
+    <!-- Filters -->
+    <div class="filter-bar">
+      <div class="filter-bar__left" id="filterBtns">
+        <button class="filter-btn active" data-filter="all">⊕ All <span class="cnt">94</span></button>
+        <button class="filter-btn" data-filter="live"><span class="dot-live"></span> Live <span class="cnt">8</span></button>
+        <button class="filter-btn" data-filter="lecture">▶ Lectures <span class="cnt">61</span></button>
+        <button class="filter-btn" data-filter="workshop">○ Workshops <span class="cnt">14</span></button>
+        <button class="filter-btn" data-filter="beginner"># Beginner <span class="cnt">22</span></button>
+        <button class="filter-btn" data-filter="advanced">■ Advanced <span class="cnt">31</span></button>
+      </div>
+      <select class="sort-select"><option>Most Popular</option><option>Newest</option><option>Live First</option></select>
+    </div>
+  </div>
+</div>
+
+<!-- Main layout -->
+<div class="lectures-layout container" style="padding-left:0;padding-right:0;max-width:100%">
+  <!-- Sidebar -->
+  <div class="lectures-sidebar">
+    <div class="sidebar__label" style="margin-top:0">DOMAINS</div>
+    <div id="sidebarDomains"></div>
+    <div style="margin-top:16px;border-top:1px solid var(--border);padding-top:16px">
+      <div class="sidebar__reset" onclick="resetFilters()">↺ Reset filters</div>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="lectures-content">
+    <!-- Featured -->
+    <div class="featured-card" id="featuredCard"></div>
+
+    <!-- Grid -->
+    <div class="lectures-grid" id="lecturesGrid"></div>
+
+    <!-- Pagination -->
+    <div class="lectures-pagination">
+      <span id="showingCount">Showing 6 of 94 lectures</span>
+      <span class="load-more" onclick="loadMore()">[ load more + ]</span>
+    </div>
+  </div>
+</div>
+
+<div id="footer-placeholder"></div>
+
+<script src="../components/layout.js"></script>
+<script>
+initLayout('Lectures');
+
+// Domain sidebar
+const domains=[
+  {icon:'○',label:'Web Security',count:18,active:true},
+  {icon:'▶',label:'Binary Exploitation',count:12},
+  {icon:'■',label:'Forensics & DFIR',count:9},
+  {icon:'#',label:'Reverse Engineering',count:11},
+  {icon:'◈',label:'Active Directory',count:7},
+  {icon:'+',label:'Cryptography',count:8},
+  {icon:'~',label:'Network Security',count:10},
+  {icon:'⚑',label:'Malware Analysis',count:6},
+  {icon:'−',label:'OSCP Prep',count:13},
+];
+document.getElementById('sidebarDomains').innerHTML=domains.map((d,i)=>`
+  <div class="sidebar__item${d.active?' active':''}" onclick="filterDomain(${i},this)">
+    <span class="icon">${d.icon}</span>
+    <span>${d.label}</span>
+    <span class="count">${d.count}</span>
+  </div>
+`).join('');
+
+function filterDomain(i,el){
+  document.querySelectorAll('.sidebar__item').forEach(x=>x.classList.remove('active'));
+  el.classList.add('active');
+}
+function resetFilters(){
+  document.querySelectorAll('.sidebar__item').forEach((x,i)=>{ x.classList.remove('active'); if(i===0)x.classList.add('active'); });
+  document.querySelectorAll('.filter-btn').forEach((x,i)=>{ x.classList.remove('active'); if(i===0)x.classList.add('active'); });
+}
+
+// Featured card
+document.getElementById('featuredCard').innerHTML=`
+  <div class="featured-card__main">
+    <div class="featured-card__tags">
+      <span class="badge badge-gray">Featured Path</span>
+      <span class="badge badge-green"><span class="dot-live" style="width:6px;height:6px"></span> LIVE NOW</span>
+      <span style="font-family:var(--font-mono);font-size:12px;color:var(--text-3)">○ 284 watching</span>
+    </div>
+    <h2 class="featured-card__title">Web Application Penetration Testing</h2>
+    <p class="featured-card__desc">The complete offensive web security track — from HTTP fundamentals to advanced injection, SSRF, OAuth abuse, and real-world bug bounty methodology. Led live every Monday &amp; Wednesday.</p>
+    <div class="featured-card__meta">
+      <div class="featured-card__meta-item">⏱ <span class="val">14h 30m</span></div>
+      <div class="featured-card__meta-item">○ <span class="val">12 modules</span></div>
+      <div class="featured-card__meta-item">■ <span class="val">Intermediate</span></div>
+      <div class="featured-card__meta-item">by <span class="val">A. Kapoor</span></div>
+    </div>
+    <div class="featured-card__btns">
+      <button class="btn btn-primary btn-lg">▶ Join Live Session</button>
+      <button class="btn btn-outline btn-lg">View Syllabus</button>
+    </div>
+  </div>
+  <div class="featured-card__modules">
+    <div class="featured-card__modules-title">COURSE MODULES</div>
+    <div class="module-row"><span class="module-row__num">01</span><span class="module-row__title">HTTP Deep Dive &amp; Burp Suite</span><span class="module-row__dur">52m</span><span class="module-row__live"></span></div>
+    <div class="module-row"><span class="module-row__num">02</span><span class="module-row__title">Recon &amp; Fingerprinting</span><span class="module-row__dur">44m</span><span class="module-row__live"></span></div>
+    <div class="module-row"><span class="module-row__num">03</span><span class="module-row__title">SQLi — Manual &amp; Automated</span><span class="module-row__dur">1h 08m</span><span class="dot-live" style="width:6px;height:6px;flex-shrink:0"></span></div>
+    <div class="module-row"><span class="module-row__num">04</span><span class="module-row__title">XSS &amp; DOM Clobbering</span><span class="module-row__dur">58m</span><span style="width:7px"></span></div>
+    <div class="module-row"><span class="module-row__num">05</span><span class="module-row__title">SSRF &amp; CORS Misconfig</span><span class="module-row__dur">1h 02m</span><span style="width:7px"></span></div>
+  </div>
+`;
+
+// Lecture cards data
+const cards=[
+  {type:'LECTURE',level:'Beginner',domain:'Linux',title:'Linux Internals for Hackers',
+   desc:'Process memory, syscalls, /proc filesystem, and privilege boundaries explained from scratch.',
+   dur:'3h 20m',enrolled:'2.4k',watching:'',author:'S. Reyes',ai:'SR',btn:'Start →',
+   live:false,prog:0,bg:'#1a2820',col:'#4ade80'},
+  {type:'LIVE',level:'Advanced',domain:'Binary',title:'Heap Exploitation & glibc Internals',
+   desc:'tcache poisoning, House of Orange, and fastbin attacks against modern glibc allocators.',
+   dur:'2h 15m',enrolled:'891',watching:'127',author:'T. Nguyen',ai:'TN',btn:'Join Live →',
+   live:true,prog:0,bg:'#1a2030',col:'#60a5fa'},
+  {type:'LECTURE',level:'Intermediate',domain:'AD',title:'Active Directory Attacks',
+   desc:'Kerberoasting, AS-REP roasting, Pass-the-Hash, DSync, and BloodHound enumeration.',
+   dur:'5h 44m',enrolled:'3.1k',watching:'',author:'M. Larsson',ai:'ML',btn:'Continue →',
+   live:false,prog:65,bg:'#1e1a2a',col:'#a78bfa'},
+  {type:'WORKSHOP',level:'Forensics',domain:'DFIR',title:'Digital Forensics Workshop',
+   desc:'Disk imaging, memory acquisition, timeline analysis, and artifact recovery with open-source tools.',
+   dur:'4h 10m',enrolled:'1.7k',watching:'',author:'P. Vasquez',ai:'PV',btn:'Start →',
+   live:false,prog:0,bg:'#201a14',col:'#f97316'},
+  {type:'LIVE',level:'Advanced',domain:'Malware',title:'Malware Analysis & Reverse Engineering',
+   desc:'Static and dynamic analysis, IDA Pro, Ghidra, sandbox evasion techniques, and unpacking.',
+   dur:'6h 55m',enrolled:'2.2k',watching:'214',author:'E. Osei',ai:'EO',btn:'Join Live →',
+   live:true,prog:0,bg:'#1a2828',col:'#22d3ee'},
+  {type:'LECTURE',level:'Beginner',domain:'Crypto',title:'Cryptography from First Principles',
+   desc:'Symmetric &amp; asymmetric encryption, hash functions, PKI, TLS internals, and common crypto attacks.',
+   dur:'4h 30m',enrolled:'4.0k',watching:'',author:'H. Jensen',ai:'HJ',btn:'Resume →',
+   live:false,prog:30,bg:'#1a2030',col:'#60a5fa'},
+];
+
+function renderCards(list){
+  document.getElementById('lecturesGrid').innerHTML=list.map(c=>`
+    <div class="lcard${c.live?' live':''}">
+      <div class="lcard__tags">
+        <span class="badge ${c.live?'badge-green':'badge-gray'}">${c.live?'<span class="dot-live" style="width:6px;height:6px"></span>':''} ${c.type}</span>
+        <span class="badge badge-gray">${c.level}</span>
+        <span class="badge badge-gray">${c.domain}</span>
+      </div>
+      <div class="lcard__title">${c.title}</div>
+      <div class="lcard__desc">${c.desc}</div>
+      ${c.prog>0?`<div><div class="lcard__progress"><div class="lcard__progress-fill" style="width:${c.prog}%"></div></div><div style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);margin-top:3px">${c.prog}% complete</div></div>`:''}
+      <div class="lcard__meta">
+        <span class="lcard__meta-item">⏱ ${c.dur}</span>
+        <span class="lcard__meta-item">◈ ${c.enrolled} enrolled</span>
+        ${c.watching?`<span class="lcard__meta-item"><span class="watching">● ${c.watching} watching</span></span>`:''}
+      </div>
+      <div class="lcard__footer">
+        <div class="lcard__avatar-row">
+          <div class="lcard__avatar" style="background:${c.bg};color:${c.col}">${c.ai}</div>
+          <span class="lcard__author">${c.author}</span>
+        </div>
+        <button class="btn btn-outline btn-sm">${c.btn}</button>
+      </div>
+    </div>
+  `).join('');
+}
+renderCards(cards);
+
+// Filter buttons
+document.getElementById('filterBtns').addEventListener('click',e=>{
+  const btn=e.target.closest('.filter-btn');
+  if(!btn) return;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const f=btn.dataset.filter;
+  if(f==='all') renderCards(cards);
+  else if(f==='live') renderCards(cards.filter(c=>c.live));
+  else if(f==='beginner') renderCards(cards.filter(c=>c.level==='Beginner'));
+  else if(f==='advanced') renderCards(cards.filter(c=>c.level==='Advanced'));
+  else renderCards(cards);
+});
+
+function loadMore(){ document.getElementById('showingCount').textContent='Showing 12 of 94 lectures'; }
+</script>
+</body>
+</html>

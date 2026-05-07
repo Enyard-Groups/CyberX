@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>CTF Arena — CyberX</title>
+  <link rel="stylesheet" href="../styles/variables.css"/>
+  <link rel="stylesheet" href="../styles/base.css"/>
+  <link rel="stylesheet" href="../styles/base.css"/>
+  <link rel="stylesheet" href="../styles/components.css"/>
+  <style>
+  .ctf-hero {
+    background:var(--bg-0); border-bottom:1px solid var(--border);
+    padding:56px 0 40px;
+  }
+  .ctf-hero__inner { display:grid; grid-template-columns:1fr 380px; gap:48px; align-items:start; }
+  .ctf-hero__eyebrow {
+    font-family:var(--font-mono); font-size:11px; color:var(--text-3);
+    letter-spacing:2px; text-transform:uppercase; margin-bottom:20px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .ctf-hero__eyebrow::before { content:''; display:block; width:24px; height:1px; background:var(--text-3); }
+  .ctf-hero__title {
+    font-family:var(--font-serif); font-size:clamp(40px,5vw,68px);
+    line-height:1.05; color:var(--text-1); margin-bottom:16px;
+  }
+  .ctf-hero__title .accent { color:var(--neon-green); font-style:italic; }
+  .ctf-hero__desc { font-size:15px; color:var(--text-2); line-height:1.7; margin-bottom:28px; }
+  .ctf-meta-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); border-radius:var(--radius); overflow:hidden; }
+  .ctf-meta-item { background:var(--bg-2); padding:16px 18px; }
+  .ctf-meta-item .val { font-family:var(--font-serif); font-size:28px; color:var(--text-1); margin-bottom:4px; }
+  .ctf-meta-item .lbl { font-family:var(--font-mono); font-size:10px; color:var(--text-3); letter-spacing:1.5px; text-transform:uppercase; }
+
+  /* Season card */
+  .season-card {
+    background:var(--bg-terminal); border:1px solid var(--border);
+    border-radius:var(--radius-lg); overflow:hidden;
+  }
+  .season-card__header {
+    padding:16px 20px; border-bottom:1px solid var(--border);
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .season-card__title { font-family:var(--font-mono); font-size:12px; color:var(--text-2); letter-spacing:1px; }
+  .season-card__body { padding:20px; }
+  .season-progress { margin-bottom:16px; }
+  .season-progress__label { display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:11px; color:var(--text-3); margin-bottom:8px; }
+  .season-progress__bar { height:5px; background:rgba(255,255,255,0.06); border-radius:3px; overflow:hidden; }
+  .season-progress__fill { height:100%; background:var(--neon-green); border-radius:3px; }
+  .season-row { display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:12px; padding:6px 0; border-bottom:1px solid var(--border); }
+  .season-row:last-child { border-bottom:none; }
+  .season-row .k { color:var(--text-3); }
+  .season-row .v { color:var(--text-1); }
+
+  /* Filters */
+  .ctf-filters {
+    display:flex; align-items:center; gap:8px; padding:24px 0;
+    flex-wrap:wrap; border-bottom:1px solid var(--border);
+  }
+  .diff-btn {
+    font-family:var(--font-mono); font-size:11px; padding:5px 13px;
+    border-radius:4px; border:1px solid var(--border);
+    color:var(--text-3); background:transparent; cursor:pointer;
+    transition:all 0.15s; letter-spacing:0.5px;
+  }
+  .diff-btn:hover { border-color:var(--border-2); color:var(--text-1); }
+  .diff-btn.active { background:rgba(255,255,255,0.06); border-color:var(--border-2); color:var(--text-1); }
+  .diff-btn.easy   { border-color:rgba(74,222,128,0.3); color:var(--neon-green); background:var(--green-dim); }
+  .diff-btn.medium { border-color:rgba(251,191,36,0.3); color:#fbbf24; background:rgba(251,191,36,0.08); }
+  .diff-btn.hard   { border-color:rgba(249,115,22,0.3); color:var(--neon-orange); background:var(--orange-dim); }
+  .diff-btn.expert { border-color:rgba(248,113,113,0.3); color:var(--red); background:rgba(248,113,113,0.08); }
+
+  /* CTF grid */
+  .ctf-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; padding:28px 0; }
+  .ctf-card {
+    background:var(--bg-2); border:1px solid var(--border);
+    border-radius:var(--radius-lg); padding:22px;
+    display:flex; flex-direction:column; gap:12px;
+    transition:border-color 0.2s, transform 0.15s; cursor:pointer;
+  }
+  .ctf-card:hover { border-color:var(--border-2); transform:translateY(-2px); }
+  .ctf-card.solved { border-color:var(--green-border); }
+  .ctf-card__top { display:flex; align-items:center; justify-content:space-between; }
+  .ctf-card__cat { font-family:var(--font-mono); font-size:10px; color:var(--text-3); letter-spacing:1.5px; text-transform:uppercase; }
+  .ctf-card__pts { font-family:var(--font-mono); font-size:13px; font-weight:600; }
+  .ctf-card__title { font-size:15px; color:var(--text-1); font-weight:500; line-height:1.3; }
+  .ctf-card__desc { font-size:12px; color:var(--text-2); line-height:1.6; flex:1; }
+  .ctf-card__footer { display:flex; align-items:center; justify-content:space-between; padding-top:10px; border-top:1px solid var(--border); }
+  .ctf-card__solves { font-family:var(--font-mono); font-size:11px; color:var(--text-3); }
+  .ctf-card__status { font-family:var(--font-mono); font-size:10px; letter-spacing:1px; }
+
+  @media(max-width:1000px){ .ctf-hero__inner{grid-template-columns:1fr} .ctf-grid{grid-template-columns:repeat(2,1fr)} }
+  @media(max-width:640px){ .ctf-grid{grid-template-columns:1fr} }
+  </style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+
+<!-- Ticker -->
+<div class="ticker-bar">
+  <div class="ticker-bar__left"><span>CTF ARENA</span><span style="color:var(--border-2)">·</span><span>SEASON IV</span><span style="color:var(--border-2)">·</span><span>LIVE COMPETITION</span></div>
+  <div style="display:flex;gap:16px;align-items:center">
+    <span class="ticker-bar__season"><span class="dot-live"></span> 38 ONLINE</span>
+    <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-3)">12 DAYS LEFT IN SEASON</span>
+  </div>
+</div>
+
+<!-- Hero -->
+<section class="ctf-hero">
+  <div class="container">
+    <div class="ctf-hero__inner">
+      <div>
+        <div class="ctf-hero__eyebrow">CAPTURE THE FLAG</div>
+        <h1 class="ctf-hero__title">Compete.<br>Capture.<br><span class="accent">Dominate.</span></h1>
+        <p class="ctf-hero__desc">380+ challenges across web exploitation, binary, forensics, crypto, and reverse engineering. Season IV is live — compete globally and climb the ranks.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-green btn-lg">⚑ Enter Arena</button>
+          <button class="btn btn-outline btn-lg">View Scoreboard</button>
+        </div>
+        <div style="margin-top:24px">
+          <div class="ctf-meta-grid">
+            <div class="ctf-meta-item"><div class="val">380+</div><div class="lbl">Challenges</div></div>
+            <div class="ctf-meta-item"><div class="val" style="color:var(--neon-green)">38</div><div class="lbl">Online Now</div></div>
+            <div class="ctf-meta-item"><div class="val">12</div><div class="lbl">Days Left</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="season-card">
+        <div class="season-card__header">
+          <span class="season-card__title">SEASON IV — CURRENT</span>
+          <span class="badge badge-green"><span class="dot-live" style="width:5px;height:5px"></span> LIVE</span>
+        </div>
+        <div class="season-card__body">
+          <div class="season-progress">
+            <div class="season-progress__label"><span>Season Progress</span><span style="color:var(--neon-green)">73%</span></div>
+            <div class="season-progress__bar"><div class="season-progress__fill" style="width:73%"></div></div>
+          </div>
+          <div class="season-row"><span class="k">Your Rank</span><span class="v" style="color:var(--neon-green)">#142 / 4,820</span></div>
+          <div class="season-row"><span class="k">Points</span><span class="v">3,840 pts</span></div>
+          <div class="season-row"><span class="k">Solved</span><span class="v">47 / 380</span></div>
+          <div class="season-row"><span class="k">Top Category</span><span class="v" style="color:var(--neon-blue)">Web · 18 solves</span></div>
+          <div class="season-row"><span class="k">Season Ends</span><span class="v">May 11, 2025</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Challenges -->
+<section style="padding:40px 0 80px">
+  <div class="container">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+      <h2 style="font-family:var(--font-serif);font-size:28px;color:var(--text-1)">Challenges</h2>
+      <span style="font-family:var(--font-mono);font-size:12px;color:var(--text-3)">Showing 9 of 380+</span>
+    </div>
+    <div class="ctf-filters" id="ctfFilters">
+      <button class="diff-btn active" data-f="all">All <span style="opacity:0.5">380</span></button>
+      <button class="diff-btn" data-f="web">Web</button>
+      <button class="diff-btn" data-f="binary">Binary</button>
+      <button class="diff-btn" data-f="forensics">Forensics</button>
+      <button class="diff-btn" data-f="crypto">Crypto</button>
+      <button class="diff-btn" data-f="reverse">Reverse Eng.</button>
+      <span style="flex:1"></span>
+      <button class="diff-btn easy">Easy</button>
+      <button class="diff-btn medium">Medium</button>
+      <button class="diff-btn hard">Hard</button>
+      <button class="diff-btn expert">Expert</button>
+    </div>
+    <div class="ctf-grid" id="ctfGrid"></div>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+<script src="../components/layout.js"></script>
+<script>
+initLayout('CTF Arena');
+const challenges=[
+  {cat:'WEB',pts:100,title:'Injection Gauntlet',desc:'Classic SQLi meets modern WAF bypass. Find the flag hidden in the admin panel.',solves:284,diff:'easy',solved:true,col:'var(--neon-green)'},
+  {cat:'BINARY',pts:250,title:'Stack Overflow 101',desc:'Classic stack-based buffer overflow. No canary, no PIE. ret2win time.',solves:156,diff:'medium',solved:false,col:'#fbbf24'},
+  {cat:'FORENSICS',pts:150,title:'Memory Dump',desc:'A volatile memory image from a compromised server. Find what the attacker ran.',solves:203,diff:'easy',solved:true,col:'var(--neon-green)'},
+  {cat:'CRYPTO',pts:300,title:'RSA Weak Keys',desc:'Two primes share a factor. Factor the modulus and decrypt the ciphertext.',solves:89,diff:'hard',solved:false,col:'var(--neon-orange)'},
+  {cat:'WEB',pts:400,title:'SSRF to RCE',desc:'A metadata endpoint behind a proxy. Chain SSRF to internal service exploitation.',solves:42,diff:'hard',solved:false,col:'var(--neon-orange)'},
+  {cat:'REVERSE',pts:350,title:'Obfuscated Packer',desc:'A heavily packed binary with anti-debug tricks. Unpack and find the serial.',solves:61,diff:'hard',solved:false,col:'var(--neon-orange)'},
+  {cat:'WEB',pts:500,title:'Prototype Pollution RCE',desc:'A Node.js app vulnerable to prototype pollution leading to code execution.',solves:18,diff:'expert',solved:false,col:'var(--red)'},
+  {cat:'FORENSICS',pts:200,title:'Network PCAP Analysis',desc:'Analyze a suspicious PCAP. Identify C2 communication and extract the payload.',solves:134,diff:'medium',solved:false,col:'#fbbf24'},
+  {cat:'CRYPTO',pts:450,title:'Custom Cipher Break',desc:'A proprietary stream cipher with a flawed PRNG. Recover the key.',solves:29,diff:'expert',solved:false,col:'var(--red)'},
+];
+function renderCTF(list){
+  document.getElementById('ctfGrid').innerHTML=list.map(c=>`
+    <div class="ctf-card${c.solved?' solved':''}">
+      <div class="ctf-card__top">
+        <span class="ctf-card__cat">${c.cat}</span>
+        <span class="ctf-card__pts" style="color:${c.col}">${c.pts} pts</span>
+      </div>
+      <div class="ctf-card__title">${c.title}</div>
+      <div class="ctf-card__desc">${c.desc}</div>
+      <div class="ctf-card__footer">
+        <span class="ctf-card__solves">◈ ${c.solves} solves</span>
+        <span class="ctf-card__status" style="color:${c.solved?'var(--neon-green)':'var(--text-3)'}">${c.solved?'✓ SOLVED':'UNSOLVED'}</span>
+      </div>
+    </div>
+  `).join('');
+}
+renderCTF(challenges);
+document.getElementById('ctfFilters').addEventListener('click',e=>{
+  const b=e.target.closest('[data-f]');
+  if(!b)return;
+  document.querySelectorAll('[data-f]').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  const f=b.dataset.f;
+  renderCTF(f==='all'?challenges:challenges.filter(c=>c.cat.toLowerCase().includes(f)||c.diff===f));
+});
+</script>
+</body>
+</html>

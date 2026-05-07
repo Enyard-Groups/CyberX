@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+  <meta name="theme-color" content="#000000"/>
+  <title>Enroll — CyberX</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"/>
+  <style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --g:#00ff88;--b:#00d4ff;--p:#b44dff;--o:#ff6b00;--r:#ff3355;
+    --bg:#000000;--bg1:#080808;--bg2:#0e0e0e;--bg3:#141414;--bg4:#1a1a1a;
+    --t0:#ffffff;--t1:#e2e8f0;--t2:#64748b;--t3:#1e293b;
+    --br:rgba(255,255,255,0.06);--br2:rgba(255,255,255,0.12);
+    --font:'Space Grotesk',sans-serif;--mono:'JetBrains Mono',monospace;
+    --r4:6px;--r8:10px;--r12:14px;--r16:18px;
+  }
+  html{scroll-behavior:smooth}
+  body{font-family:var(--font);background:var(--bg);color:var(--t1);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+  ::-webkit-scrollbar{width:4px}
+  ::-webkit-scrollbar-track{background:var(--bg)}
+  ::-webkit-scrollbar-thumb{background:var(--t3);border-radius:2px}
+
+  /* ========== NAV ========== */
+  .nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    height:64px;background:rgba(0,0,0,0.85);backdrop-filter:blur(20px);
+    border-bottom:1px solid var(--br);
+    display:flex;align-items:center;
+  }
+  .nav-inner{max-width:1280px;margin:0 auto;padding:0 24px;width:100%;display:flex;align-items:center;justify-content:space-between;gap:24px}
+  .nav-logo{display:flex;align-items:center;gap:10px}
+  .hex{width:34px;height:34px;display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0}
+  .hex::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--g),var(--b));clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)}
+  .hex span{position:relative;z-index:1;font-family:var(--mono);font-size:11px;font-weight:700;color:#000}
+  .logo-name{font-size:17px;font-weight:800;color:var(--t0);letter-spacing:-0.02em}
+  .nav-btns{display:flex;align-items:center;gap:8px}
+  .btn-ghost{background:transparent;border:1px solid var(--br2);color:var(--t2);padding:8px 16px;border-radius:var(--r8);font-family:var(--mono);font-size:12px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center}
+  .btn-ghost:hover{color:var(--t0);border-color:rgba(255,255,255,0.2);background:rgba(255,255,255,0.04)}
+  .btn-green{background:var(--g);color:#000;border:none;padding:9px 18px;border-radius:var(--r8);font-family:var(--mono);font-size:12px;font-weight:700;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+  .btn-green:hover{transform:translateY(-1px);box-shadow:0 0 20px rgba(0,255,136,0.4)}
+
+  /* ========== HERO ========== */
+  .hero{
+    min-height:100vh;display:flex;align-items:center;justify-content:center;
+    padding:120px 24px 80px;position:relative;overflow:hidden;text-align:center;
+  }
+  .hero-bg{position:absolute;inset:0;pointer-events:none}
+  .hgrid{
+    position:absolute;inset:0;
+    background-image:linear-gradient(rgba(0,255,136,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,0.04) 1px,transparent 1px);
+    background-size:48px 48px;
+    mask-image:radial-gradient(ellipse 70% 70% at 50% 50%,black 40%,transparent 100%);
+  }
+  .horb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
+  .ho1{width:600px;height:600px;top:-200px;left:50%;transform:translateX(-50%);background:radial-gradient(circle,rgba(0,255,136,0.08) 0%,transparent 70%)}
+  .ho2{width:400px;height:400px;bottom:-100px;left:-100px;background:radial-gradient(circle,rgba(0,212,255,0.07) 0%,transparent 70%)}
+  .ho3{width:400px;height:400px;bottom:-100px;right:-100px;background:radial-gradient(circle,rgba(180,77,255,0.06) 0%,transparent 70%)}
+  .hero-scan{position:absolute;left:0;right:0;height:1px;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(0,255,136,0.4),transparent);animation:scan 8s linear infinite}
+  @keyframes scan{from{top:0}to{top:100%}}
+
+  .hero-content{position:relative;z-index:1;max-width:720px}
+  .hero-eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:var(--mono);font-size:11px;color:var(--t3);
+    letter-spacing:2px;text-transform:uppercase;
+    padding:6px 14px;border:1px solid rgba(0,255,136,0.15);border-radius:999px;
+    background:rgba(0,255,136,0.04);margin-bottom:24px;
+  }
+  .ldot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--g);box-shadow:0 0 8px var(--g);animation:lp 2s infinite}
+  @keyframes lp{0%,100%{opacity:1}50%{opacity:0.4}}
+  .hero-title{
+    font-size:clamp(40px,7vw,80px);font-weight:800;
+    line-height:1.02;letter-spacing:-0.04em;color:var(--t0);
+    margin-bottom:24px;
+  }
+  .grad{background:linear-gradient(135deg,var(--g) 0%,var(--b) 60%,var(--p) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .hero-sub{font-size:18px;color:var(--t2);line-height:1.65;margin-bottom:40px;max-width:520px;margin-left:auto;margin-right:auto}
+  .hero-btns{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;margin-bottom:56px}
+  .big-btn{
+    padding:16px 36px;font-family:var(--mono);font-size:14px;font-weight:700;
+    border-radius:12px;cursor:pointer;transition:all 0.2s;
+    display:inline-flex;align-items:center;gap:8px;letter-spacing:0.5px;
+  }
+  .big-btn-green{background:linear-gradient(135deg,var(--g),#00c97a);color:#000;border:none}
+  .big-btn-green:hover{transform:translateY(-3px);box-shadow:0 0 40px rgba(0,255,136,0.4),0 12px 40px rgba(0,0,0,0.5)}
+  .big-btn-outline{background:transparent;color:var(--t1);border:1px solid var(--br2)}
+  .big-btn-outline:hover{border-color:rgba(0,255,136,0.4);color:var(--g);background:rgba(0,255,136,0.04);transform:translateY(-1px)}
+
+  /* Trust bar */
+  .trust{display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap;font-family:var(--mono);font-size:12px;color:var(--t3)}
+  .trust-item{display:flex;align-items:center;gap:7px}
+  .trust-item span:first-child{color:var(--g)}
+
+  /* ========== STATS STRIP ========== */
+  .stats-strip{background:var(--bg1);border-top:1px solid var(--br);border-bottom:1px solid var(--br)}
+  .stats-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
+  @media(max-width:700px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
+  .stat-cell{
+    padding:36px 28px;border-right:1px solid var(--br);
+    transition:background 0.2s;position:relative;overflow:hidden;
+  }
+  .stat-cell:last-child{border-right:none}
+  .stat-cell:hover{background:rgba(255,255,255,0.02)}
+  .stat-cell::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 50%,rgba(0,255,136,0.04),transparent 70%);opacity:0;transition:opacity 0.3s}
+  .stat-cell:hover::before{opacity:1}
+  .stat-icon{font-size:22px;margin-bottom:12px}
+  .stat-num{
+    font-size:clamp(32px,4vw,52px);font-weight:800;line-height:1;
+    letter-spacing:-0.03em;margin-bottom:7px;
+  }
+  .stat-lbl{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:2px;text-transform:uppercase;margin-bottom:5px}
+  .stat-note{font-family:var(--mono);font-size:11px;color:var(--t3)}
+  .stat-note .up{color:var(--g)}
+
+  /* ========== PLANS ========== */
+  .section{padding:96px 24px;max-width:1280px;margin:0 auto}
+  .sec-eyebrow{font-family:var(--mono);font-size:11px;color:var(--t3);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:10px;justify-content:center}
+  .sec-eyebrow::before{content:'//';color:var(--g)}
+  .sec-title{font-size:clamp(28px,4vw,48px);font-weight:800;letter-spacing:-0.03em;color:var(--t0);text-align:center;margin-bottom:14px;line-height:1.05}
+  .sec-sub{font-size:16px;color:var(--t2);text-align:center;margin-bottom:16px;line-height:1.6}
+
+  /* Toggle */
+  .billing-wrap{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:56px;font-family:var(--mono);font-size:13px}
+  .billing-lbl{color:var(--t2);cursor:pointer;transition:color 0.15s}
+  .billing-lbl.on{color:var(--t0)}
+  .toggle-track{width:48px;height:26px;background:var(--g);border-radius:999px;position:relative;cursor:pointer;transition:background 0.2s}
+  .toggle-knob{position:absolute;top:3px;width:20px;height:20px;background:#000;border-radius:50%;transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1)}
+  .toggle-track.off{background:var(--br2)}
+  .toggle-track.off .toggle-knob{transform:translateX(3px)}
+  .toggle-track.on .toggle-knob{transform:translateX(25px)}
+  .save-badge{background:rgba(0,255,136,0.1);color:var(--g);border:1px solid rgba(0,255,136,0.25);border-radius:999px;padding:3px 10px;font-size:11px;letter-spacing:1px}
+
+  /* Plan cards */
+  .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:60px}
+  @media(max-width:900px){.plans{grid-template-columns:1fr;max-width:420px;margin:0 auto 60px}}
+  .plan{
+    background:var(--bg2);border:1px solid var(--br);border-radius:18px;
+    padding:32px 28px;display:flex;flex-direction:column;gap:0;
+    position:relative;overflow:hidden;transition:all 0.3s;
+  }
+  .plan:hover{transform:translateY(-4px);border-color:var(--br2);box-shadow:0 24px 60px rgba(0,0,0,0.6)}
+  .plan.featured{
+    border-color:rgba(0,255,136,0.3);
+    background:linear-gradient(160deg,rgba(0,255,136,0.05) 0%,var(--bg2) 50%);
+    box-shadow:0 0 60px rgba(0,255,136,0.06),0 24px 60px rgba(0,0,0,0.5);
+  }
+  .plan.featured:hover{box-shadow:0 0 80px rgba(0,255,136,0.1),0 32px 80px rgba(0,0,0,0.6)}
+  .plan-glow{position:absolute;top:-40px;left:50%;transform:translateX(-50%);width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(0,255,136,0.12) 0%,transparent 70%);pointer-events:none}
+  .plan-tier-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;position:relative;z-index:1}
+  .plan-tier{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:2px;display:flex;align-items:center;gap:7px}
+  .tier-dot{width:7px;height:7px;border-radius:50%}
+  .plan-tag{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;padding:3px 10px;border-radius:var(--r4);border:1px solid var(--br2);color:var(--t2)}
+  .plan-tag.pop{background:rgba(0,255,136,0.08);border-color:rgba(0,255,136,0.25);color:var(--g)}
+  .plan-name{font-size:26px;font-weight:800;color:var(--t0);letter-spacing:-0.02em;margin-bottom:10px;position:relative;z-index:1}
+  .plan-desc{font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:24px;position:relative;z-index:1}
+  .plan-price{display:flex;align-items:baseline;gap:3px;margin-bottom:6px;position:relative;z-index:1}
+  .plan-cur{font-family:var(--mono);font-size:18px;color:var(--t2)}
+  .plan-amt{font-size:52px;font-weight:800;line-height:1;letter-spacing:-0.04em}
+  .plan-per{font-family:var(--mono);font-size:13px;color:var(--t3)}
+  .plan-billing{font-family:var(--mono);font-size:11px;color:var(--t3);margin-bottom:24px;position:relative;z-index:1}
+  .plan-billing span{color:var(--t2)}
+  .plan-btn{
+    width:100%;padding:14px;font-family:var(--mono);font-size:13px;font-weight:700;
+    letter-spacing:0.5px;border-radius:10px;cursor:pointer;margin-bottom:28px;
+    transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;
+    position:relative;z-index:1;
+  }
+  .plan-btn-free{background:transparent;color:var(--t0);border:1px solid var(--br2)}
+  .plan-btn-free:hover{border-color:rgba(255,255,255,0.25);background:rgba(255,255,255,0.04)}
+  .plan-btn-pro{background:linear-gradient(135deg,var(--g),#00c97a);color:#000;border:none}
+  .plan-btn-pro:hover{transform:translateY(-2px);box-shadow:0 0 30px rgba(0,255,136,0.4),0 8px 30px rgba(0,0,0,0.5)}
+  .plan-btn-team{background:transparent;color:var(--t0);border:1px solid var(--br2)}
+  .plan-btn-team:hover{border-color:rgba(255,255,255,0.25);background:rgba(255,255,255,0.04)}
+  .plan-feats{display:flex;flex-direction:column;gap:11px;position:relative;z-index:1}
+  .pf{display:flex;align-items:flex-start;gap:10px;font-family:var(--mono);font-size:12.5px;color:var(--t2);line-height:1.4}
+  .pf .chk{color:var(--g);flex-shrink:0;margin-top:1px}
+  .pf .lock{color:var(--t3);flex-shrink:0;font-size:10px}
+
+  /* Trust row */
+  .trust-row{display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap;font-family:var(--mono);font-size:12px;color:var(--t3);padding:28px 0;border-top:1px solid var(--br);border-bottom:1px solid var(--br)}
+  .trust-row span{display:flex;align-items:center;gap:7px;color:var(--t2)}
+
+  /* ========== COMPARISON ========== */
+  .comp-wrap{background:var(--bg1);border:1px solid var(--br);border-radius:18px;overflow:hidden;margin-top:8px}
+  .comp-header{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;border-bottom:1px solid var(--br)}
+  .comp-title{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:2.5px;text-transform:uppercase}
+  .comp-toggle{font-family:var(--mono);font-size:12px;color:var(--t2);cursor:pointer;transition:color 0.15s;background:none;border:none;padding:0}
+  .comp-toggle:hover{color:var(--t0)}
+  .comp-table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:13px}
+  .comp-table th{padding:14px 24px;text-align:right;font-size:10px;color:var(--t3);letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid var(--br);font-weight:500}
+  .comp-table th:first-child{text-align:left}
+  .comp-table th.pro-h{color:var(--g)}
+  .comp-table th.team-h{color:var(--p)}
+  .comp-table td{padding:14px 24px;border-bottom:1px solid var(--br);text-align:right;color:var(--t2)}
+  .comp-table td:first-child{text-align:left;font-family:var(--font);font-size:14px;color:var(--t1)}
+  .comp-table tr:last-child td{border-bottom:none}
+  .comp-table tr:hover td{background:rgba(255,255,255,0.02)}
+  .cv-g{color:var(--g)} .cv-b{color:var(--b)} .cv-p{color:var(--p)} .cv-dim{color:var(--t3)}
+
+  /* ========== FAQ ========== */
+  .faq-wrap{max-width:700px;margin:0 auto}
+  .faq-item{border-bottom:1px solid var(--br)}
+  .faq-q{display:flex;align-items:center;gap:16px;padding:20px 0;cursor:pointer;transition:color 0.15s;font-size:15px;color:var(--t1);font-weight:500}
+  .faq-q:hover{color:var(--g)}
+  .faq-qnum{font-family:var(--mono);font-size:11px;color:var(--t3);min-width:28px;flex-shrink:0}
+  .faq-qtext{flex:1}
+  .faq-icon{width:26px;height:26px;border:1px solid var(--br2);border-radius:var(--r4);display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--t3);flex-shrink:0;transition:all 0.2s}
+  .faq-item.open .faq-icon{background:rgba(0,255,136,0.08);border-color:rgba(0,255,136,0.3);color:var(--g);transform:rotate(45deg)}
+  .faq-a{display:none;padding:0 0 20px 44px;font-size:15px;color:var(--t2);line-height:1.75;animation:fup 0.2s ease}
+  .faq-a.open{display:block}
+  @keyframes fup{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ========== CTA BAND ========== */
+  .cta-band{
+    margin:80px 24px;border-radius:24px;padding:72px 40px;text-align:center;
+    position:relative;overflow:hidden;
+    background:linear-gradient(135deg,rgba(0,255,136,0.06) 0%,rgba(0,212,255,0.04) 50%,rgba(180,77,255,0.04) 100%);
+    border:1px solid rgba(0,255,136,0.12);
+  }
+  .cta-band-orb{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none}
+  .cba1{width:400px;height:400px;top:-150px;left:50%;transform:translateX(-50%);background:radial-gradient(circle,rgba(0,255,136,0.1) 0%,transparent 70%)}
+  .cta-band h2{font-size:clamp(28px,5vw,52px);font-weight:800;letter-spacing:-0.03em;color:var(--t0);margin-bottom:14px;line-height:1.05;position:relative;z-index:1}
+  .cta-band p{font-size:17px;color:var(--t2);margin-bottom:36px;line-height:1.6;position:relative;z-index:1}
+  .cta-band-btns{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;position:relative;z-index:1}
+
+  /* ========== FOOTER ========== */
+  .footer{background:var(--bg);border-top:1px solid var(--br);padding:48px 24px 24px;position:relative;overflow:hidden}
+  .footer-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:40px}
+  @media(max-width:900px){.footer-inner{grid-template-columns:1fr 1fr;gap:32px}}
+  @media(max-width:580px){.footer-inner{grid-template-columns:1fr}}
+  .footer-logo{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .footer-logo-name{font-size:18px;font-weight:800;color:var(--t0);letter-spacing:-0.02em}
+  .footer-desc{font-size:14px;color:var(--t2);line-height:1.7;max-width:300px;margin-bottom:20px}
+  .footer-input-row{display:flex;gap:8px}
+  .footer-input{flex:1;background:var(--bg2);border:1px solid var(--br);border-radius:var(--r8);padding:10px 14px;font-family:var(--mono);font-size:13px;color:var(--t0);outline:none;transition:border-color 0.2s}
+  .footer-input::placeholder{color:var(--t3)}
+  .footer-input:focus{border-color:rgba(0,255,136,0.3);box-shadow:0 0 0 3px rgba(0,255,136,0.06)}
+  .footer-col-title{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--br)}
+  .footer-links{display:flex;flex-direction:column;gap:11px}
+  .footer-links a{font-size:14px;color:var(--t2);transition:color 0.15s;display:flex;align-items:center;gap:7px}
+  .footer-links a:hover{color:var(--t0)}
+  .fbadge{font-family:var(--mono);font-size:9px;letter-spacing:1px;padding:2px 7px;border-radius:4px;border:1px solid}
+  .fbadge-g{background:rgba(0,255,136,0.08);color:var(--g);border-color:rgba(0,255,136,0.2)}
+  .fbadge-b{background:rgba(0,212,255,0.08);color:var(--b);border-color:rgba(0,212,255,0.2)}
+  .fbadge-o{background:rgba(255,107,0,0.08);color:var(--o);border-color:rgba(255,107,0,0.2)}
+  .fbadge-gray{background:rgba(255,255,255,0.04);color:var(--t2);border-color:var(--br2)}
+  .footer-bottom{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;padding-top:24px;border-top:1px solid var(--br)}
+  .footer-status{font-family:var(--mono);font-size:10px;color:var(--t3);display:flex;align-items:center;gap:16px;flex-wrap:wrap;letter-spacing:0.5px}
+  .footer-status span{display:flex;align-items:center;gap:6px}
+  .ldot2{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--g);box-shadow:0 0 6px var(--g);animation:lp 2s infinite}
+  .footer-copy{font-family:var(--mono);font-size:10px;color:var(--t3)}
+
+  /* Floating matrix canvas */
+  .matrix-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.025}
+  </style>
+</head>
+<body>
+
+<canvas class="matrix-canvas" id="mc"></canvas>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo">
+      <div class="hex"><span>CX</span></div>
+      <span class="logo-name">CyberX</span>
+    </a>
+    <div class="nav-btns">
+      <a href="signin.html" class="btn-ghost">Sign In</a>
+      <a href="#plans" class="btn-green">Enroll Now →</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="hgrid"></div>
+    <div class="horb ho1"></div>
+    <div class="horb ho2"></div>
+    <div class="horb ho3"></div>
+    <div class="hero-scan"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-eyebrow"><span class="ldot"></span>Season IV Live · 38 operators online</div>
+    <h1 class="hero-title">
+      Choose your<br>
+      <span class="grad">access level.</span>
+    </h1>
+    <p class="hero-sub">Start free and upgrade when you're ready. No paywalls on the fundamentals. Real labs, real CTFs, real skills.</p>
+    <div class="hero-btns">
+      <a href="#plans" class="big-btn big-btn-green">→ View Plans</a>
+      <a href="signin.html" class="big-btn big-btn-outline">Already enrolled? Sign In</a>
+    </div>
+    <div class="trust">
+      <div class="trust-item"><span>✓</span> Cancel anytime</div>
+      <div class="trust-item"><span>✓</span> Labs in &lt;30s</div>
+      <div class="trust-item"><span>✓</span> Student discount 40%</div>
+      <div class="trust-item"><span>✓</span> 14-day money back</div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats-strip">
+  <div class="stats-grid">
+    <div class="stat-cell">
+      <div class="stat-icon">👥</div>
+      <div class="stat-num" style="background:linear-gradient(90deg,var(--g),var(--b));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">12,400+</div>
+      <div class="stat-lbl">Enrolled Students</div>
+      <div class="stat-note"><span class="up">+340</span> this week</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-icon">⚑</div>
+      <div class="stat-num" style="background:linear-gradient(90deg,var(--b),var(--p));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">380+</div>
+      <div class="stat-lbl">CTF Challenges</div>
+      <div class="stat-note">Season IV live</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-icon">🎓</div>
+      <div class="stat-num" style="background:linear-gradient(90deg,var(--p),var(--o));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">94</div>
+      <div class="stat-lbl">Expert Lectures</div>
+      <div class="stat-note"><span class="up">8 live</span> now</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-icon">🛡</div>
+      <div class="stat-num" style="background:linear-gradient(90deg,var(--o),var(--g));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">40+</div>
+      <div class="stat-lbl">Security Domains</div>
+      <div class="stat-note">OSCP to DFIR</div>
+    </div>
+  </div>
+</section>
+
+<!-- PLANS -->
+<section class="section" id="plans">
+  <div class="sec-eyebrow">Access Tiers</div>
+  <h2 class="sec-title">Pick your operator level.</h2>
+  <p class="sec-sub">All plans include Codex access. Upgrade for labs, live lectures, and CTF seasons.</p>
+
+  <!-- Billing toggle -->
+  <div class="billing-wrap">
+    <span class="billing-lbl" id="lblMonthly">Monthly</span>
+    <div class="toggle-track on" id="billingToggle" onclick="toggleBilling()">
+      <div class="toggle-knob"></div>
+    </div>
+    <span class="billing-lbl on" id="lblAnnual">Annual</span>
+    <span class="save-badge">Save 35%</span>
+  </div>
+
+  <div class="plans">
+    <!-- EXPLORER -->
+    <div class="plan">
+      <div class="plan-tier-row">
+        <div class="plan-tier"><span class="tier-dot" style="background:var(--t3)"></span>TIER::FREE</div>
+      </div>
+      <div class="plan-name">Explorer</div>
+      <div class="plan-desc">Start exploring the Codex and a curated set of CTF challenges — no card required.</div>
+      <div class="plan-price"><span class="plan-amt" style="color:var(--g)">Free</span></div>
+      <div class="plan-billing">&nbsp;</div>
+      <button class="plan-btn plan-btn-free" onclick="window.location.href='signin.html'">Start Exploring</button>
+      <div class="plan-feats">
+        <div class="pf"><span class="chk">✓</span>Full Codex read access</div>
+        <div class="pf"><span class="chk">✓</span>20 CTF challenges (Beginner)</div>
+        <div class="pf"><span class="chk">✓</span>Community Discord access</div>
+        <div class="pf"><span class="chk">✓</span>Public leaderboard</div>
+        <div class="pf"><span class="lock">·</span><span style="color:var(--t3)">Live lectures</span></div>
+        <div class="pf"><span class="lock">·</span><span style="color:var(--t3)">Lab environments</span></div>
+        <div class="pf"><span class="lock">·</span><span style="color:var(--t3)">CTF archive</span></div>
+      </div>
+    </div>
+
+    <!-- OPERATOR -->
+    <div class="plan featured">
+      <div class="plan-glow"></div>
+      <div class="plan-tier-row">
+        <div class="plan-tier"><span class="tier-dot" style="background:var(--g)"></span>TIER::PRO</div>
+        <span class="plan-tag pop">MOST POPULAR</span>
+      </div>
+      <div class="plan-name">Operator</div>
+      <div class="plan-desc">Full platform access. Live lectures, all CTF seasons, and dedicated lab machines.</div>
+      <div class="plan-price">
+        <span class="plan-cur">$</span>
+        <span class="plan-amt" id="proAmt" style="background:linear-gradient(135deg,var(--g),var(--b));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">19</span>
+        <span class="plan-per">/mo</span>
+      </div>
+      <div class="plan-billing">Billed annually — <span id="proBilled">$228/yr</span></div>
+      <button class="plan-btn plan-btn-pro" onclick="window.location.href='signin.html'">Enroll Now →</button>
+      <div class="plan-feats">
+        <div class="pf"><span class="chk">✓</span>Everything in Explorer</div>
+        <div class="pf"><span class="chk">✓</span>All 380+ CTF challenges</div>
+        <div class="pf"><span class="chk">✓</span>94 lectures + live sessions</div>
+        <div class="pf"><span class="chk">✓</span>Dedicated lab environments</div>
+        <div class="pf"><span class="chk">✓</span>CTF archive — all seasons</div>
+        <div class="pf"><span class="chk">✓</span>Progress tracking &amp; certificates</div>
+        <div class="pf"><span class="chk">✓</span>OSCP / PNPT prep paths</div>
+        <div class="pf"><span class="chk">✓</span>Priority community support</div>
+      </div>
+    </div>
+
+    <!-- RED TEAM -->
+    <div class="plan">
+      <div class="plan-tier-row">
+        <div class="plan-tier"><span class="tier-dot" style="background:var(--p)"></span>TIER::TEAM</div>
+        <span class="plan-tag">FOR TEAMS</span>
+      </div>
+      <div class="plan-name">Red Team</div>
+      <div class="plan-desc">Everything in Operator, shared workspaces, admin dashboard, and volume pricing.</div>
+      <div class="plan-price">
+        <span class="plan-cur">$</span>
+        <span class="plan-amt" id="teamAmt" style="color:var(--p)">59</span>
+        <span class="plan-per">/mo</span>
+      </div>
+      <div class="plan-billing">Billed annually — <span id="teamBilled">$708/yr</span></div>
+      <button class="plan-btn plan-btn-team">Contact Sales</button>
+      <div class="plan-feats">
+        <div class="pf"><span class="chk">✓</span>Everything in Operator</div>
+        <div class="pf"><span class="chk">✓</span>Up to 25 seats</div>
+        <div class="pf"><span class="chk">✓</span>Shared CTF workspaces</div>
+        <div class="pf"><span class="chk">✓</span>Team leaderboard &amp; analytics</div>
+        <div class="pf"><span class="chk">✓</span>Admin dashboard</div>
+        <div class="pf"><span class="chk">✓</span>SSO / SAML support</div>
+        <div class="pf"><span class="chk">✓</span>Custom lab provisioning</div>
+        <div class="pf"><span class="chk">✓</span>Dedicated account manager</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trust row -->
+  <div class="trust-row">
+    <span>■ Cancel anytime, no lock-in</span>
+    <span>○ Labs in &lt;30 seconds</span>
+    <span># Student discount — 40% off</span>
+    <span>★ 14-day money-back guarantee</span>
+  </div>
+
+  <!-- Comparison table -->
+  <div class="comp-wrap" style="margin-top:48px">
+    <div class="comp-header">
+      <span class="comp-title">Feature Comparison Matrix</span>
+      <button class="comp-toggle" onclick="toggleComp()" id="compToggleBtn">[ collapse − ]</button>
+    </div>
+    <div id="compBody">
+      <table class="comp-table">
+        <thead>
+          <tr>
+            <th></th><th>EXPLORER</th>
+            <th class="pro-h">OPERATOR</th>
+            <th class="team-h">RED TEAM</th>
+          </tr>
+        </thead>
+        <tbody id="compTbody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section style="padding:0 24px 96px;max-width:1280px;margin:0 auto">
+  <div class="sec-eyebrow">Common Questions</div>
+  <h2 class="sec-title" style="margin-bottom:48px">Pricing FAQ.</h2>
+  <div class="faq-wrap" id="faqList"></div>
+</section>
+
+<!-- CTA BAND -->
+<div style="max-width:1280px;margin:0 auto;padding:0 24px">
+  <div class="cta-band">
+    <div class="cta-band-orb cba1"></div>
+    <h2>Start free.<br><span class="grad">Upgrade when you're ready.</span></h2>
+    <p>No credit card required for Explorer. Upgrade to Operator for full access — cancel anytime.</p>
+    <div class="cta-band-btns">
+      <a href="signin.html" class="big-btn big-btn-green">Start Free →</a>
+      <a href="#plans" class="big-btn big-btn-outline">Compare Plans</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">
+        <div class="hex"><span>CX</span></div>
+        <span class="footer-logo-name">CyberX</span>
+      </div>
+      <p class="footer-desc">A live platform, a growing compendium, and a community of practitioners. From first principles to advanced exploit development.</p>
+      <div class="footer-input-row">
+        <input class="footer-input" type="email" placeholder="operator@cyberx.sh"/>
+        <button class="btn-green btn-sm" style="padding:10px 16px;font-size:11px;border-radius:var(--r8)">Subscribe</button>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Learn</div>
+      <div class="footer-links">
+        <a href="codex.html">Codex</a>
+        <a href="lectures.html">Live Lectures <span class="fbadge fbadge-g">8 LIVE</span></a>
+        <a href="ctf.html">CTF Arena <span class="fbadge fbadge-b">S4</span></a>
+        <a href="labs.html">Lab Environments</a>
+        <a href="leaderboard.html">Leaderboard</a>
+        <a href="#">Certifications</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Platform</div>
+      <div class="footer-links">
+        <a href="#">About CyberX</a>
+        <a href="enroll.html">Pricing <span class="fbadge fbadge-o">NEW</span></a>
+        <a href="#">API Access</a>
+        <a href="#">Instructor Portal</a>
+        <a href="#">Changelog <span class="fbadge fbadge-gray">v4.2.1</span></a>
+        <a href="#">Status</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Community</div>
+      <div class="footer-links">
+        <a href="#">Discord Server <span class="fbadge fbadge-g">ONLINE</span></a>
+        <a href="#">Write-ups</a>
+        <a href="#">Blog</a>
+        <a href="#">Hall of Fame</a>
+        <a href="#">Bug Bounty</a>
+        <a href="#">Contribute</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-status">
+      <span><span class="ldot2"></span> ALL SYSTEMS OPERATIONAL</span>
+      <span>CTF ARENA · 38 ONLINE</span>
+      <span>SEASON IV · 12 DAYS LEFT</span>
+      <span>94 LECTURES INDEXED</span>
+    </div>
+    <div class="footer-copy">© 2025 CyberX. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+/* Matrix background */
+(function(){
+  const c=document.getElementById('mc');
+  const ctx=c.getContext('2d');
+  const resize=()=>{c.width=window.innerWidth;c.height=window.innerHeight};
+  resize();window.addEventListener('resize',resize);
+  const chars='ABCDEF0123456789アイウエオ<>[]#$@!';
+  const fs=13;let drops=[];
+  const init=()=>{drops=Array(Math.floor(c.width/fs)).fill(1)};
+  init();window.addEventListener('resize',init);
+  setInterval(()=>{
+    ctx.fillStyle='rgba(0,0,0,0.05)';ctx.fillRect(0,0,c.width,c.height);
+    ctx.fillStyle='#00ff88';ctx.font=fs+'px JetBrains Mono,monospace';
+    drops.forEach((y,i)=>{
+      ctx.globalAlpha=Math.random()*0.3+0.05;
+      ctx.fillText(chars[Math.floor(Math.random()*chars.length)],i*fs,y*fs);
+      if(y*fs>c.height&&Math.random()>0.975)drops[i]=0;else drops[i]++;
+    });
+    ctx.globalAlpha=1;
+  },60);
+})();
+
+/* Billing toggle */
+let isAnnual=true;
+function toggleBilling(){
+  isAnnual=!isAnnual;
+  const track=document.getElementById('billingToggle');
+  track.className='toggle-track '+(isAnnual?'on':'off');
+  document.getElementById('lblMonthly').classList.toggle('on',!isAnnual);
+  document.getElementById('lblAnnual').classList.toggle('on',isAnnual);
+  if(isAnnual){
+    document.getElementById('proAmt').textContent='19';
+    document.getElementById('proBilled').textContent='$228/yr';
+    document.getElementById('teamAmt').textContent='59';
+    document.getElementById('teamBilled').textContent='$708/yr';
+  }else{
+    document.getElementById('proAmt').textContent='29';
+    document.getElementById('proBilled').textContent='Switch to annual & save $240/yr';
+    document.getElementById('teamAmt').textContent='79';
+    document.getElementById('teamBilled').textContent='Switch to annual & save $240/yr';
+  }
+}
+
+/* Comparison table */
+const rows=[
+  {label:'Codex Access',      e:'✓ Full',  op:'✓ Full',  t:'✓ Full',  ec:'cv-g',oc:'cv-g',tc:'cv-g'},
+  {label:'CTF Challenges',    e:'20',      op:'380+',    t:'380+',    ec:'cv-dim',oc:'cv-b',tc:'cv-b'},
+  {label:'Live Lectures',     e:'·',       op:'✓',       t:'✓',       ec:'cv-dim',oc:'cv-g',tc:'cv-g'},
+  {label:'Lab Environments',  e:'·',       op:'✓',       t:'Custom',  ec:'cv-dim',oc:'cv-g',tc:'cv-p'},
+  {label:'CTF Archive',       e:'·',       op:'✓ All',   t:'✓ All',   ec:'cv-dim',oc:'cv-g',tc:'cv-g'},
+  {label:'Certificates',      e:'·',       op:'✓',       t:'✓',       ec:'cv-dim',oc:'cv-g',tc:'cv-g'},
+  {label:'OSCP/PNPT Paths',   e:'·',       op:'✓',       t:'✓',       ec:'cv-dim',oc:'cv-g',tc:'cv-g'},
+  {label:'Priority Support',  e:'·',       op:'✓',       t:'✓',       ec:'cv-dim',oc:'cv-g',tc:'cv-g'},
+  {label:'Team Workspace',    e:'·',       op:'·',       t:'✓',       ec:'cv-dim',oc:'cv-dim',tc:'cv-g'},
+  {label:'Admin Dashboard',   e:'·',       op:'·',       t:'✓',       ec:'cv-dim',oc:'cv-dim',tc:'cv-g'},
+];
+document.getElementById('compTbody').innerHTML=rows.map(r=>`
+  <tr>
+    <td>${r.label}</td>
+    <td class="${r.ec}">${r.e}</td>
+    <td class="${r.oc}">${r.op}</td>
+    <td class="${r.tc}">${r.t}</td>
+  </tr>
+`).join('');
+let compOpen=true;
+function toggleComp(){
+  compOpen=!compOpen;
+  document.getElementById('compBody').style.display=compOpen?'':'none';
+  document.getElementById('compToggleBtn').textContent=compOpen?'[ collapse − ]':'[ expand + ]';
+}
+
+/* FAQ */
+const faqs=[
+  {q:'Can I switch plans later?',a:'Yes — upgrade or downgrade any time from your account settings. Prorated billing is applied automatically.'},
+  {q:'What happens when a CTF season ends?',a:'Your solved challenges and XP carry over. Season archives remain accessible to Operator+ members. New seasons launch every 3 months.'},
+  {q:'How does the student discount work?',a:'Verify your student status with a .edu email or student ID scan. 40% off applies to all Operator plans, billed monthly or annually.'},
+  {q:'Do lab environments reset?',a:'Dedicated lab VMs reset between sessions. Your progress, flags, and notes are always saved to your account — only the machine resets.'},
+  {q:'Can I cancel mid-billing cycle?',a:'Yes. Your access continues until the end of the current billing period. No penalties, no lock-in, no questions asked.'},
+];
+const fl=document.getElementById('faqList');
+faqs.forEach((f,i)=>{
+  const d=document.createElement('div');
+  d.className='faq-item';d.id='faq-'+i;
+  d.innerHTML=`<div class="faq-q" onclick="tfaq(${i})"><span class="faq-qnum">0${i+1}</span><span class="faq-qtext">${f.q}</span><span class="faq-icon">+</span></div><div class="faq-a" id="faqA-${i}">${f.a}</div>`;
+  fl.appendChild(d);
+});
+function tfaq(i){
+  const it=document.getElementById('faq-'+i);
+  const an=document.getElementById('faqA-'+i);
+  const op=it.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(x=>{x.classList.remove('open');x.querySelector('.faq-a').classList.remove('open');});
+  if(!op){it.classList.add('open');an.classList.add('open');}
+}
+</script>
+</body>
+</html>

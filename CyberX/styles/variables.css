@@ -1,0 +1,57 @@
+/* ============================================
+   CYBERX — Design Tokens v3
+   Mobile-First · Cinematic · Cyber
+   ============================================ */
+:root {
+  /* ---- Core Background ---- */
+  --bg-0:       #060910;   /* deepest black */
+  --bg-1:       #090d18;   /* primary bg */
+  --bg-2:       #0d1220;   /* cards */
+  --bg-3:       #111828;   /* elevated */
+  --bg-4:       #162035;   /* hover */
+
+  /* ---- Neon Accents ---- */
+  --neon-green:  #00ff88;
+  --neon-blue:   #00d4ff;
+  --neon-purple: #b44dff;
+  --neon-orange: #ff6b00;
+  --neon-red:    #ff3366;
+
+  /* ---- Glow versions ---- */
+  --glow-green:  rgba(0,255,136,0.15);
+  --glow-blue:   rgba(0,212,255,0.15);
+  --glow-purple: rgba(180,77,255,0.15);
+
+  /* ---- Borders ---- */
+  --border-0:   rgba(0,255,136,0.06);
+  --border-1:   rgba(255,255,255,0.06);
+  --border-2:   rgba(255,255,255,0.1);
+  --border-green: rgba(0,255,136,0.25);
+  --border-blue:  rgba(0,212,255,0.25);
+
+  /* ---- Text ---- */
+  --text-0:  #ffffff;
+  --text-1:  #e2e8f0;
+  --text-2:  #7a9ab8;
+  --text-3:  #3d5a78;
+  --text-4:  #1e3048;
+
+  /* ---- Fonts ---- */
+  --font-display: 'Space Grotesk', 'Inter', sans-serif;
+  --font-mono:    'JetBrains Mono', 'Fira Code', monospace;
+  --font-body:    'Inter', system-ui, sans-serif;
+
+  /* ---- Spacing ---- */
+  --nav-h:   60px;
+  --max-w:   1280px;
+  --r-sm:    6px;
+  --r-md:    10px;
+  --r-lg:    16px;
+  --r-xl:    24px;
+  --r-full:  9999px;
+
+  /* ---- Transitions ---- */
+  --ease:     cubic-bezier(0.4,0,0.2,1);
+  --ease-out: cubic-bezier(0,0,0.2,1);
+  --ease-spring: cubic-bezier(0.34,1.56,0.64,1);
+}

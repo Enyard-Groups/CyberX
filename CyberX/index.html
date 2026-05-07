@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+  <meta name="theme-color" content="#060910"/>
+  <title>CyberX — Master Cybersecurity. Live.</title>
+  <link rel="stylesheet" href="styles/variables.css"/>
+  <link rel="stylesheet" href="styles/base.css"/>
+  <style>
+  /* ===================== HERO ===================== */
+  .hero {
+    min-height:100svh; display:flex; flex-direction:column;
+    justify-content:center; position:relative; overflow:hidden;
+    padding:80px 0 60px;
+  }
+  .hero__bg-canvas { position:absolute;inset:0;width:100%;height:100%; }
+  .hero__orb-1 {
+    position:absolute; width:600px; height:600px;
+    top:-200px; right:-200px; border-radius:50%; pointer-events:none;
+    background:radial-gradient(circle,rgba(0,212,255,0.08) 0%,transparent 70%);
+    animation:float 8s ease-in-out infinite;
+  }
+  .hero__orb-2 {
+    position:absolute; width:800px; height:800px;
+    bottom:-400px; left:-200px; border-radius:50%; pointer-events:none;
+    background:radial-gradient(circle,rgba(0,255,136,0.05) 0%,transparent 70%);
+    animation:float 12s ease-in-out infinite reverse;
+  }
+  .hero__grid {
+    position:absolute; inset:0; pointer-events:none; opacity:1;
+    background-image:
+      linear-gradient(rgba(0,255,136,0.025) 1px, transparent 1px),
+      linear-gradient(90deg,rgba(0,255,136,0.025) 1px, transparent 1px);
+    background-size:48px 48px;
+    mask-image:radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+  }
+  .hero__inner {
+    position:relative; z-index:1;
+    display:grid; grid-template-columns:1fr;
+    gap:48px; align-items:center;
+  }
+  @media(min-width:1024px) {
+    .hero__inner { grid-template-columns:1fr 480px; gap:64px; }
+  }
+
+  /* Eye-brow */
+  .hero__eyebrow {
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:var(--font-mono); font-size:11px; color:var(--text-3);
+    letter-spacing:2px; text-transform:uppercase;
+    margin-bottom:20px;
+    padding:6px 12px; border:1px solid rgba(0,255,136,0.12);
+    border-radius:var(--r-full); background:rgba(0,255,136,0.04);
+  }
+
+  /* Headline */
+  .hero__title {
+    font-family:var(--font-display); font-weight:800;
+    font-size:clamp(40px,8vw,80px); line-height:1.0;
+    letter-spacing:-0.03em; color:var(--text-0);
+    margin-bottom:24px;
+  }
+  .hero__title .line-accent {
+    background:linear-gradient(90deg,var(--neon-green),var(--neon-blue));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    background-clip:text;
+  }
+  .hero__title .line-dim { color:var(--text-2); }
+
+  /* Desc */
+  .hero__desc {
+    font-size:clamp(15px,2vw,17px); color:var(--text-2); line-height:1.72;
+    max-width:500px; margin-bottom:32px;
+  }
+  .hero__desc strong { color:var(--text-1); font-weight:500; }
+
+  /* Search */
+  .hero__search {
+    display:flex; margin-bottom:28px; border-radius:var(--r-lg);
+    border:1px solid rgba(0,255,136,0.15); overflow:hidden;
+    background:rgba(255,255,255,0.03);
+    box-shadow:0 0 40px rgba(0,255,136,0.06);
+    transition:border-color 0.2s, box-shadow 0.2s;
+    max-width:560px;
+  }
+  .hero__search:focus-within {
+    border-color:rgba(0,255,136,0.35);
+    box-shadow:0 0 40px rgba(0,255,136,0.12);
+  }
+  .hero__search-prefix {
+    padding:0 14px; font-family:var(--font-mono); font-size:13px;
+    color:var(--neon-green); border-right:1px solid rgba(255,255,255,0.06);
+    display:flex; align-items:center; background:rgba(0,255,136,0.04);
+    flex-shrink:0;
+  }
+  .hero__search input {
+    flex:1; background:transparent; border:none; outline:none;
+    padding:14px 16px; font-family:var(--font-mono); font-size:13px;
+    color:var(--text-1); min-width:0;
+  }
+  .hero__search input::placeholder { color:var(--text-3); }
+  .hero__search button {
+    padding:0 20px; background:var(--neon-green); color:#060910;
+    font-family:var(--font-mono); font-size:12px; font-weight:700;
+    letter-spacing:1px; border:none; cursor:pointer;
+    transition:background 0.15s; flex-shrink:0;
+  }
+  .hero__search button:hover { background:#00e67a; }
+
+  /* Filter chips */
+  .hero__chips {
+    display:flex; gap:8px; flex-wrap:wrap; margin-bottom:28px;
+  }
+  .hero__chip {
+    font-family:var(--font-mono); font-size:11px;
+    padding:5px 12px; border-radius:var(--r-full);
+    border:1px solid var(--border-1); color:var(--text-3);
+    background:transparent; cursor:pointer; transition:all 0.15s;
+    display:flex; align-items:center; gap:5px;
+  }
+  .hero__chip:hover { border-color:var(--border-2); color:var(--text-1); }
+  .hero__chip.active {
+    background:rgba(0,255,136,0.08); border-color:rgba(0,255,136,0.3);
+    color:var(--neon-green);
+  }
+
+  /* CTAs */
+  .hero__ctas { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:20px; }
+  .hero__footnote {
+    font-family:var(--font-mono); font-size:11px; color:var(--text-3);
+    display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+  }
+  .hero__footnote span { display:flex; align-items:center; gap:5px; }
+  .hero__footnote span::before { content:'·'; color:var(--text-4); margin-right:4px; }
+  .hero__footnote span:first-child::before { display:none; }
+
+  /* Terminal panel */
+  .hero__terminal {
+    animation:float 6s ease-in-out infinite;
+    display:none;
+  }
+  @media(min-width:1024px) { .hero__terminal { display:block; } }
+  .terminal-panel {
+    background:var(--bg-2); border:1px solid rgba(0,255,136,0.15);
+    border-radius:var(--r-xl); overflow:hidden;
+    box-shadow:0 0 60px rgba(0,255,136,0.08), 0 40px 80px rgba(0,0,0,0.6);
+  }
+  .terminal-panel__bar {
+    background:rgba(255,255,255,0.03); padding:13px 18px;
+    border-bottom:1px solid rgba(255,255,255,0.05);
+    display:flex; align-items:center; gap:8px;
+  }
+  .terminal-panel__dots { display:flex; gap:6px; }
+  .terminal-panel__dot {
+    width:11px; height:11px; border-radius:50%;
+  }
+  .terminal-panel__title {
+    flex:1; text-align:center; font-family:var(--font-mono);
+    font-size:11px; color:var(--text-3); letter-spacing:0.5px;
+  }
+  .terminal-panel__body {
+    padding:20px 22px; font-family:var(--font-mono); font-size:12.5px;
+    line-height:1.85; min-height:280px;
+  }
+  .t-comment { color:var(--text-3); }
+  .t-prompt  { color:var(--neon-green); }
+  .t-cmd     { color:var(--text-1); }
+  .t-result  { color:var(--text-3); }
+  .t-link    { color:var(--neon-blue); }
+  .t-live    { color:var(--neon-green); }
+  .t-cursor  {
+    display:inline-block; width:8px; height:14px;
+    background:var(--neon-green); vertical-align:middle;
+    animation:blink 1s step-end infinite; margin-left:2px;
+    box-shadow:0 0 8px var(--neon-green);
+  }
+
+  /* Floating CTF badge */
+  .hero__float-badge {
+    position:absolute; bottom:24px; right:24px;
+    background:var(--bg-2); border:1px solid rgba(0,255,136,0.2);
+    border-radius:var(--r-lg); padding:10px 16px;
+    display:flex; align-items:center; gap:10px;
+    box-shadow:0 8px 32px rgba(0,0,0,0.5), 0 0 20px rgba(0,255,136,0.05);
+    font-family:var(--font-mono); font-size:12px; color:var(--text-2);
+    cursor:pointer; transition:all 0.2s; z-index:2;
+  }
+  .hero__float-badge:hover {
+    border-color:rgba(0,255,136,0.4); transform:translateY(-2px);
+    box-shadow:0 12px 40px rgba(0,0,0,0.6), 0 0 30px rgba(0,255,136,0.08);
+  }
+
+  /* ===================== STATS ===================== */
+  .stats { border-top:1px solid rgba(255,255,255,0.04); border-bottom:1px solid rgba(255,255,255,0.04); background:var(--bg-0); }
+  .stats__grid {
+    display:grid; grid-template-columns:repeat(2,1fr);
+  }
+  @media(min-width:768px) { .stats__grid { grid-template-columns:repeat(4,1fr); } }
+  .stats__item {
+    padding:32px 24px; border-right:1px solid rgba(255,255,255,0.04);
+    border-bottom:1px solid rgba(255,255,255,0.04);
+    transition:background 0.2s; cursor:default;
+    position:relative; overflow:hidden;
+  }
+  .stats__item:hover { background:rgba(255,255,255,0.02); }
+  .stats__item:nth-child(2n) { border-right:none; }
+  @media(min-width:768px) {
+    .stats__item:nth-child(2n) { border-right:1px solid rgba(255,255,255,0.04); }
+    .stats__item:last-child { border-right:none; }
+    .stats__item { border-bottom:none; }
+  }
+  .stats__icon { font-size:20px; margin-bottom:14px; }
+  .stats__val {
+    font-family:var(--font-display); font-size:clamp(32px,5vw,52px);
+    font-weight:800; line-height:1; letter-spacing:-0.03em;
+    margin-bottom:8px; color:var(--text-0);
+  }
+  .stats__label {
+    font-family:var(--font-mono); font-size:10px; color:var(--text-3);
+    letter-spacing:2px; text-transform:uppercase; margin-bottom:6px;
+  }
+  .stats__sub { font-family:var(--font-mono); font-size:11px; color:var(--text-3); }
+  .stats__sub .up { color:var(--neon-green); }
+  .stats__glow {
+    position:absolute; inset:0; opacity:0;
+    background:radial-gradient(circle at 30% 50%, rgba(0,255,136,0.06) 0%, transparent 70%);
+    transition:opacity 0.3s;
+  }
+  .stats__item:hover .stats__glow { opacity:1; }
+
+  /* ===================== FEATURES ===================== */
+  .features__grid {
+    display:grid; grid-template-columns:1fr;
+    gap:16px;
+  }
+  @media(min-width:640px)  { .features__grid { grid-template-columns:repeat(2,1fr); } }
+  @media(min-width:1024px) { .features__grid { grid-template-columns:repeat(3,1fr); } }
+
+  .feature-card {
+    background:var(--bg-2); border:1px solid var(--border-1);
+    border-radius:var(--r-lg); padding:28px 24px;
+    transition:all 0.3s var(--ease); cursor:default; position:relative; overflow:hidden;
+  }
+  .feature-card::before {
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(135deg,rgba(255,255,255,0.02),transparent);
+    opacity:0; transition:opacity 0.3s;
+  }
+  .feature-card:hover::before { opacity:1; }
+  .feature-card:hover {
+    transform:translateY(-4px);
+    box-shadow:0 20px 60px rgba(0,0,0,0.5);
+  }
+  .feature-card:hover { border-color:var(--c,rgba(0,255,136,0.2)); box-shadow:0 20px 60px rgba(0,0,0,0.5), 0 0 40px var(--cg,rgba(0,255,136,0.05)); }
+  .feature-card__icon {
+    width:48px; height:48px; border-radius:var(--r-lg); margin-bottom:18px;
+    display:flex; align-items:center; justify-content:center; font-size:22px;
+  }
+  .feature-card__title {
+    font-family:var(--font-display); font-size:17px; font-weight:700;
+    color:var(--text-0); margin-bottom:10px; letter-spacing:-0.01em;
+  }
+  .feature-card__desc {
+    font-size:14px; color:var(--text-2); line-height:1.68;
+  }
+  .feature-card__link {
+    display:inline-flex; align-items:center; gap:6px; margin-top:16px;
+    font-family:var(--font-mono); font-size:11px; letter-spacing:1px;
+    transition:gap 0.2s;
+  }
+  .feature-card:hover .feature-card__link { gap:10px; }
+
+  /* ===================== SECTION HEADER ===================== */
+  .section-header { margin-bottom:48px; }
+  .section-header .eyebrow {
+    font-family:var(--font-mono); font-size:11px; color:var(--text-3);
+    letter-spacing:2.5px; text-transform:uppercase;
+    display:flex; align-items:center; gap:10px; margin-bottom:14px;
+  }
+  .section-header .eyebrow::before { content:'//'; color:var(--neon-green); }
+  .section-header h2 {
+    font-family:var(--font-display); font-size:clamp(28px,4vw,46px);
+    font-weight:800; letter-spacing:-0.02em; color:var(--text-0);
+    line-height:1.1; margin-bottom:14px;
+  }
+  .section-header p {
+    font-size:16px; color:var(--text-2); max-width:500px; line-height:1.7;
+  }
+  .section-header.center { text-align:center; }
+  .section-header.center p { margin:0 auto; }
+  .section-header.center .eyebrow { justify-content:center; }
+
+  /* ===================== FAQ ===================== */
+  .faq-item {
+    border-bottom:1px solid rgba(255,255,255,0.05);
+  }
+  .faq-q {
+    display:flex; align-items:center; gap:16px; padding:20px 0;
+    cursor:pointer; transition:color 0.15s;
+  }
+  .faq-q:hover { color:var(--neon-green); }
+  .faq-q__num {
+    font-family:var(--font-mono); font-size:11px; color:var(--text-3);
+    min-width:28px; flex-shrink:0;
+  }
+  .faq-q__text { font-size:15px; color:var(--text-1); flex:1; font-weight:500; }
+  .faq-q__icon {
+    width:26px; height:26px; border:1px solid var(--border-1);
+    border-radius:var(--r-sm); display:flex; align-items:center;
+    justify-content:center; font-size:14px; color:var(--text-3);
+    flex-shrink:0; transition:all 0.2s;
+  }
+  .faq-item.open .faq-q__icon {
+    background:rgba(0,255,136,0.08); border-color:rgba(0,255,136,0.25);
+    color:var(--neon-green); transform:rotate(45deg);
+  }
+  .faq-a {
+    display:none; padding:0 0 20px 44px;
+    font-size:15px; color:var(--text-2); line-height:1.75;
+  }
+  .faq-a.open { display:block; animation:fadeUp 0.25s ease; }
+  .faq-tags { display:flex; gap:6px; margin-top:12px; flex-wrap:wrap; }
+
+  /* ===================== TESTIMONIALS ===================== */
+  .tcard {
+    background:var(--bg-2); border:1px solid var(--border-1);
+    border-radius:var(--r-xl); padding:28px 32px; transition:all 0.2s;
+  }
+  .tcard__avatar {
+    width:48px; height:48px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-display); font-size:16px; font-weight:700;
+    flex-shrink:0;
+  }
+  .tcard__body { font-size:15px; color:var(--text-2); line-height:1.78; margin:20px 0; }
+  .tcard__tag-row { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:16px; }
+  .tcard__bounty { font-family:var(--font-mono); font-size:20px; font-weight:700; color:var(--neon-green); }
+
+  /* ===================== TESTIMONIALS NAV DOTS ===================== */
+  .t-nav-dots { display:flex; gap:6px; align-items:center; }
+  .t-nav-dot {
+    width:7px; height:7px; border-radius:50%;
+    background:var(--border-2); cursor:pointer; transition:all 0.2s;
+  }
+  .t-nav-dot.active { background:var(--neon-green); box-shadow:0 0 8px var(--neon-green); width:20px; border-radius:4px; }
+
+  /* ===================== CTA SECTION ===================== */
+  .cta-section {
+    background:linear-gradient(135deg,rgba(0,255,136,0.04),rgba(0,212,255,0.04));
+    border:1px solid rgba(0,255,136,0.1); border-radius:var(--r-xl);
+    padding:56px 40px; text-align:center; position:relative; overflow:hidden;
+  }
+  .cta-section h2 {
+    font-family:var(--font-display); font-size:clamp(28px,4vw,48px);
+    font-weight:800; letter-spacing:-0.02em; color:var(--text-0);
+    margin-bottom:14px; line-height:1.1;
+  }
+  .cta-section p {
+    font-size:16px; color:var(--text-2); margin-bottom:32px; line-height:1.65;
+  }
+
+  /* Mobile responsive hero */
+  @media(max-width:640px) {
+    .hero__ctas { flex-direction:column; align-items:flex-start; }
+    .hero__ctas .btn { width:100%; justify-content:center; }
+    .hero__float-badge { bottom:16px; right:16px; }
+  }
+  </style>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<!-- ========== HERO ========== -->
+<section class="hero">
+  <canvas class="hero__bg-canvas" id="heroCanvas"></canvas>
+  <div class="hero__orb-1"></div>
+  <div class="hero__orb-2"></div>
+  <div class="hero__grid"></div>
+
+  <div class="container">
+    <div class="hero__inner">
+      <!-- Left content -->
+      <div>
+        <div class="hero__eyebrow anim-on-load delay-1">
+          <span class="dot-live"></span>
+          Season IV Live · 38 operators online
+        </div>
+
+        <h1 class="hero__title anim-on-load delay-2">
+          Master the<br>
+          <span class="line-accent">Art of Hacking.</span><br>
+          <span class="line-dim">From First Principles.</span>
+        </h1>
+
+        <p class="hero__desc anim-on-load delay-3">
+          Live lectures, capture-the-flag arenas, and a complete
+          <strong>indexed compendium</strong> of offensive &amp; defensive security —
+          curated for curious minds of every background.
+        </p>
+
+        <!-- Filter chips -->
+        <div class="hero__chips anim-on-load delay-3">
+          <button class="hero__chip active" onclick="setChip(this)">⊕ All</button>
+          <button class="hero__chip" onclick="setChip(this)"># Codex</button>
+          <button class="hero__chip" onclick="setChip(this)">▶ Lectures</button>
+          <button class="hero__chip" onclick="setChip(this)">⚑ CTF</button>
+          <button class="hero__chip" onclick="setChip(this)">◫ Labs</button>
+        </div>
+
+        <!-- Search -->
+        <div class="hero__search anim-on-load delay-4">
+          <div class="hero__search-prefix">~/nexus $</div>
+          <input id="heroSearch" type="text" placeholder="search the codex…"
+            onkeydown="if(event.key==='Enter')doSearch()"/>
+          <button onclick="doSearch()">QUERY</button>
+        </div>
+
+        <!-- CTAs -->
+        <div class="hero__ctas anim-on-load delay-4">
+          <a href="pages/lectures.html" class="btn btn-primary btn-lg">
+            → Start Learning
+          </a>
+          <a href="pages/lectures.html" class="btn btn-outline-green btn-lg">
+            ○ View Live Lectures
+          </a>
+        </div>
+        <div class="hero__footnote anim-on-load delay-5">
+          <span>Free to explore</span>
+          <span>No credit card</span>
+          <span>20 free CTFs</span>
+        </div>
+      </div>
+
+      <!-- Right: Terminal -->
+      <div class="hero__terminal">
+        <div class="terminal-panel">
+          <div class="terminal-panel__bar">
+            <div class="terminal-panel__dots">
+              <span class="terminal-panel__dot" style="background:#ff3b30"></span>
+              <span class="terminal-panel__dot" style="background:#ffcc00"></span>
+              <span class="terminal-panel__dot" style="background:#28c840"></span>
+            </div>
+            <div class="terminal-panel__title">nexus@cyberx:~</div>
+          </div>
+          <div class="terminal-panel__body" id="termBody">
+            <div class="t-comment"># CyberX v4.2.1 — Operator Terminal</div>
+            <div class="t-comment"># Type to search the codex</div>
+            <br>
+            <div id="termLines"></div>
+            <div>
+              <span class="t-prompt">&gt; </span>
+              <span class="t-cursor"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Floating badge on terminal -->
+        <div class="hero__float-badge" onclick="window.location='pages/ctf.html'">
+          <span>🔒</span>
+          <div>
+            <div style="color:var(--text-1);font-weight:500">CTF Arena</div>
+            <div style="font-size:10px;color:var(--text-3)">38 online now</div>
+          </div>
+          <div class="dot-live"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== STATS ========== -->
+<section class="stats">
+  <div class="stats__grid" style="max-width:var(--max-w);margin:0 auto;padding:0 20px">
+    <div class="stats__item">
+      <div class="stats__glow"></div>
+      <div class="stats__icon">👥</div>
+      <div class="stats__val" style="background:linear-gradient(90deg,var(--neon-green),var(--neon-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">12,400+</div>
+      <div class="stats__label">Enrolled Students</div>
+      <div class="stats__sub"><span class="up">+340</span> this week</div>
+    </div>
+    <div class="stats__item">
+      <div class="stats__glow"></div>
+      <div class="stats__icon">⚑</div>
+      <div class="stats__val" style="background:linear-gradient(90deg,var(--neon-blue),var(--neon-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">380+</div>
+      <div class="stats__label">CTF Challenges</div>
+      <div class="stats__sub">Season IV live</div>
+    </div>
+    <div class="stats__item">
+      <div class="stats__glow"></div>
+      <div class="stats__icon">🎓</div>
+      <div class="stats__val" style="background:linear-gradient(90deg,var(--neon-purple),var(--neon-orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">94</div>
+      <div class="stats__label">Expert Lectures</div>
+      <div class="stats__sub"><span class="up">8 live</span> right now</div>
+    </div>
+    <div class="stats__item">
+      <div class="stats__glow"></div>
+      <div class="stats__icon">🛡</div>
+      <div class="stats__val" style="background:linear-gradient(90deg,var(--neon-orange),var(--neon-green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">40+</div>
+      <div class="stats__label">Security Domains</div>
+      <div class="stats__sub">OSCP to DFIR</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FEATURES ========== -->
+<section class="section">
+  <div class="container">
+    <div class="section-header center">
+      <div class="eyebrow">Why CyberX</div>
+      <h2>Everything in one<br>operator console.</h2>
+      <p>Learn, practice, compete — all on one platform built by practitioners.</p>
+    </div>
+    <div class="features__grid">
+      <div class="feature-card" style="--c:rgba(0,255,136,0.2);--cg:rgba(0,255,136,0.05)">
+        <div class="feature-card__icon" style="background:rgba(0,255,136,0.1);color:var(--neon-green)">◈</div>
+        <div class="feature-card__title">Structured Learning Paths</div>
+        <p class="feature-card__desc">Curated paths for OSCP, PNPT, CEH. Clear milestones, XP tracking, certificates on completion.</p>
+        <a href="pages/lectures.html" class="feature-card__link" style="color:var(--neon-green)">Explore paths →</a>
+      </div>
+      <div class="feature-card" style="--c:rgba(0,212,255,0.2);--cg:rgba(0,212,255,0.05)">
+        <div class="feature-card__icon" style="background:rgba(0,212,255,0.1);color:var(--neon-blue)">⚡</div>
+        <div class="feature-card__title">Live CTF Arena</div>
+        <p class="feature-card__desc">Season-based CTF events with real-time scoring. 380+ challenges from beginner to expert.</p>
+        <a href="pages/ctf.html" class="feature-card__link" style="color:var(--neon-blue)">Enter arena →</a>
+      </div>
+      <div class="feature-card" style="--c:rgba(180,77,255,0.2);--cg:rgba(180,77,255,0.05)">
+        <div class="feature-card__icon" style="background:rgba(180,77,255,0.1);color:var(--neon-purple)">◫</div>
+        <div class="feature-card__title">Browser-Based Labs</div>
+        <p class="feature-card__desc">Vulnerable machines spin up in seconds. No VM, no setup — just launch and attack.</p>
+        <a href="pages/labs.html" class="feature-card__link" style="color:var(--neon-purple)">Launch lab →</a>
+      </div>
+      <div class="feature-card" style="--c:rgba(0,255,136,0.2);--cg:rgba(0,255,136,0.05)">
+        <div class="feature-card__icon" style="background:rgba(0,255,136,0.08);color:var(--neon-green)">📡</div>
+        <div class="feature-card__title">Live Lectures</div>
+        <p class="feature-card__desc">Expert-led sessions on current techniques — web hacking, binary exploitation, AD attacks.</p>
+        <a href="pages/lectures.html" class="feature-card__link" style="color:var(--neon-green)">Watch live →</a>
+      </div>
+      <div class="feature-card" style="--c:rgba(0,212,255,0.2);--cg:rgba(0,212,255,0.05)">
+        <div class="feature-card__icon" style="background:rgba(0,212,255,0.08);color:var(--neon-blue)">#</div>
+        <div class="feature-card__title">The Codex</div>
+        <p class="feature-card__desc">A complete indexed reference of offensive &amp; defensive techniques. 4,000+ entries.</p>
+        <a href="pages/codex.html" class="feature-card__link" style="color:var(--neon-blue)">Open codex →</a>
+      </div>
+      <div class="feature-card" style="--c:rgba(255,107,0,0.2);--cg:rgba(255,107,0,0.05)">
+        <div class="feature-card__icon" style="background:rgba(255,107,0,0.08);color:var(--neon-orange)">✦</div>
+        <div class="feature-card__title">Certificates &amp; XP</div>
+        <p class="feature-card__desc">Earn verifiable certificates and XP for every module. Flex your skills to employers.</p>
+        <a href="pages/pricing.html" class="feature-card__link" style="color:var(--neon-orange)">View plans →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FAQ ========== -->
+<section class="section" style="background:var(--bg-0);border-top:1px solid rgba(255,255,255,0.04)">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr;gap:64px;align-items:start">
+      <div style="display:grid;grid-template-columns:1fr;gap:48px">
+        <div class="section-header">
+          <div class="eyebrow">Common Questions</div>
+          <h2>Everything you need<br>to know about <span style="background:linear-gradient(90deg,var(--neon-green),var(--neon-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">CyberX.</span></h2>
+          <p>A live platform, growing compendium, community of practitioners.</p>
+        </div>
+        <div id="faqList"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== TESTIMONIALS ========== -->
+<section class="section">
+  <div class="container">
+    <div class="section-header center">
+      <div class="eyebrow">Verified Members</div>
+      <h2>Real people.<br><span style="background:linear-gradient(90deg,var(--neon-green),var(--neon-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Real breakthroughs.</span></h2>
+      <p>From absolute beginners to seasoned red teamers.</p>
+    </div>
+
+    <div style="max-width:700px;margin:0 auto">
+      <div class="tcard" id="tCard"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:20px;flex-wrap:wrap;gap:12px">
+        <div class="t-nav-dots" id="tDots"></div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-outline btn-sm" onclick="prevT()">← Prev</button>
+          <button class="btn btn-outline btn-sm" onclick="nextT()">Next →</button>
+          <button class="btn btn-primary btn-sm">Join Community</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== CTA ========== -->
+<section class="section-sm">
+  <div class="container">
+    <div class="cta-section">
+      <div class="orb orb-green" style="width:300px;height:300px;top:-100px;left:-50px;opacity:0.3"></div>
+      <div class="orb orb-blue" style="width:300px;height:300px;bottom:-100px;right:-50px;opacity:0.3"></div>
+      <div style="position:relative;z-index:1">
+        <h2>Join 12,400+ security<br>professionals.</h2>
+        <p>Free tier forever. Upgrade when you're ready for the full arsenal.</p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+          <a href="pages/pricing.html" class="btn btn-primary btn-xl">Enroll Now →</a>
+          <a href="pages/ctf.html"     class="btn btn-outline-green btn-xl">Try a Free CTF</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+
+<script src="components/layout.js"></script>
+<script>
+initLayout('');
+
+/* ---- Particle canvas ---- */
+(function(){
+  const c=document.getElementById('heroCanvas');
+  if(!c)return;
+  const ctx=c.getContext('2d');
+  const resize=()=>{c.width=c.offsetWidth;c.height=c.offsetHeight};
+  resize(); window.addEventListener('resize',resize);
+  const pts=Array.from({length:60},()=>({
+    x:Math.random()*c.width,y:Math.random()*c.height,
+    vx:(Math.random()-0.5)*0.3,vy:(Math.random()-0.5)*0.3,
+    r:Math.random()*1.5+0.5,o:Math.random()*0.4+0.1
+  }));
+  const frame=()=>{
+    ctx.clearRect(0,0,c.width,c.height);
+    pts.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0||p.x>c.width)p.vx*=-1;
+      if(p.y<0||p.y>c.height)p.vy*=-1;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(0,255,136,${p.o})`;ctx.fill();
+    });
+    pts.forEach((p,i)=>{
+      for(let j=i+1;j<pts.length;j++){
+        const dx=p.x-pts[j].x,dy=p.y-pts[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<120){
+          ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(pts[j].x,pts[j].y);
+          ctx.strokeStyle=`rgba(0,255,136,${0.06*(1-d/120)})`;ctx.stroke();
+        }
+      }
+    });
+    requestAnimationFrame(frame);
+  };
+  frame();
+})();
+
+/* ---- Terminal animation ---- */
+const tLines=[
+  {t:'cmd',  s:'nexus search "sql injection"'},
+  {t:'res',  s:'// Codex — 14 entries found'},
+  {t:'link', s:'  [01] SQLi Fundamentals · Beginner'},
+  {t:'link', s:'  [02] Blind SQLi & OAST · Intermediate'},
+  {t:'link', s:'  [03] SQLMap & Automation · Advanced'},
+  {t:'link', s:'  [CTF] Injection Gauntlet · Season IV'},
+  {t:'blank',s:''},
+  {t:'cmd',  s:'nexus lecture --live'},
+  {t:'live', s:'  ● Web App Pentesting 101'},
+  {t:'res',  s:'  Started 12 min ago · 284 watching'},
+];
+let ti=0,ci=0;
+const tb=document.getElementById('termLines');
+function typeNext(){
+  if(ti>=tLines.length)return;
+  const line=tLines[ti];
+  if(line.t==='blank'){tb.innerHTML+='<br>';ti++;setTimeout(typeNext,200);return;}
+  const cls=line.t==='cmd'?'t-prompt':line.t==='link'?'t-link':line.t==='live'?'t-live':'t-result';
+  if(ci===0){
+    const d=document.createElement('div');
+    d.id='tl-'+ti;d.className=cls;
+    tb.appendChild(d);
+  }
+  const el=document.getElementById('tl-'+ti);
+  if(ci<line.s.length){
+    el.textContent=line.s.slice(0,++ci);
+    setTimeout(typeNext,line.t==='cmd'?40:15);
+  } else {ci=0;ti++;setTimeout(typeNext,line.t==='cmd'?280:40);}
+}
+setTimeout(typeNext,1200);
+
+/* ---- Chips ---- */
+function setChip(el){
+  document.querySelectorAll('.hero__chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+}
+
+/* ---- Search ---- */
+function doSearch(){
+  const v=document.getElementById('heroSearch').value.trim();
+  if(v)window.location.href='pages/codex.html?q='+encodeURIComponent(v);
+}
+
+/* ---- FAQ ---- */
+const faqs=[
+  {q:'Do I need a technical background to get started?',
+   a:'Not at all. CyberX starts from absolute first principles. Whether you\'re a developer, student, or curious beginner — every topic is explained before depth is introduced.',tags:['Beginner Friendly','No Prerequisites']},
+  {q:'What is a CTF (Capture The Flag)?',
+   a:'CTFs are competitive hacking events where you solve security challenges to find hidden "flags". Season IV is live with 380+ challenges across web, binary, crypto, and forensics.',tags:['CTF','Competition']},
+  {q:'Are live lectures recorded?',
+   a:'Yes — all sessions are recorded and available to Operator+ members within 24 hours, fully indexed and linked to Codex entries.',tags:['Operator','Red Team']},
+  {q:'How are the lab environments different?',
+   a:'Every lab is a real browser-based VM — not a simulation. You attack actual vulnerable systems. No download, no setup, spins up in under 30 seconds.',tags:['Labs']},
+  {q:'Is CyberX free to use?',
+   a:'Yes. Explorer tier is permanently free — no credit card required. Includes full Codex access and 20 CTF challenges.',tags:['Free Tier']},
+  {q:'How is this different from other platforms?',
+   a:'We combine structured Codex reference, live lectures, real labs, and CTF competitions in one place. Every topic links to hands-on practice — no passive video watching.',tags:[]},
+];
+const fl=document.getElementById('faqList');
+faqs.forEach((f,i)=>{
+  const d=document.createElement('div');
+  d.className='faq-item'; d.id='faq-'+i;
+  d.innerHTML=`
+    <div class="faq-q" onclick="toggleFaq(${i})">
+      <span class="faq-q__num">0${i+1}</span>
+      <span class="faq-q__text">${f.q}</span>
+      <span class="faq-q__icon">+</span>
+    </div>
+    <div class="faq-a" id="faqA-${i}">
+      ${f.a}
+      ${f.tags.length?`<div class="faq-tags">${f.tags.map(t=>`<span class="badge badge-gray">${t}</span>`).join('')}</div>`:''}
+    </div>`;
+  fl.appendChild(d);
+});
+function toggleFaq(i){
+  const item=document.getElementById('faq-'+i);
+  const ans=document.getElementById('faqA-'+i);
+  const open=item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(x=>{x.classList.remove('open');x.querySelector('.faq-a').classList.remove('open');});
+  if(!open){item.classList.add('open');ans.classList.add('open');}
+}
+
+/* ---- Testimonials ---- */
+const testimonials=[
+  {init:'MO',name:'Marcus Osei',role:'Bug Bounty Hunter · Accra',handle:'@ghostshell_dev',tag:'Bug Bounty',stars:'★★★★★',
+   body:'Reported my first critical CVE three months after joining. The web exploitation Codex is absurdly thorough — SSRF, CORS misconfig, prototype pollution — all indexed with real-world context.',
+   tags:['SSRF','Prototype Pollution','Season III'],bounty:'$4,200',bountyLabel:'First Bounty',bg:'#1a1408',col:'#ff6b00'},
+  {init:'PN',name:'Priya Nair',role:'Security Engineer · London',handle:'@r00t_runner',tag:'OSCP',stars:'★★★★★',
+   body:'Passed OSCP on my first attempt. The lab environments here are the closest thing to the OSCP exam experience I\'ve found. Methodology-first, no hand-holding.',
+   tags:['OSCP Prep','Labs','Certification'],bounty:'',bountyLabel:'',bg:'#081420',col:'#00d4ff'},
+  {init:'EV',name:'Elena Vasquez',role:'CS Student · Madrid',handle:'@xor_elena',tag:'Beginner',stars:'★★★★★',
+   body:'Started with zero experience. Within 3 months I could read and write actual exploit code. The Codex is unlike anything else — it\'s a proper reference, not a tutorial.',
+   tags:['0→CTF','Beginner Path'],bounty:'',bountyLabel:'',bg:'#0a1420',col:'#00ff88'},
+  {init:'KM',name:'Katsuki Mori',role:'Pentester · Tokyo',handle:'@nullbyte_kat',tag:'#7 Season III',stars:'★★★★★',
+   body:'Season IV CTF challenges are legitimately hard. I\'ve competed on HackTheBox and TryHackMe — CyberX challenges are closer to real engagements than anything else.',
+   tags:['CTF','Season IV'],bounty:'',bountyLabel:'',bg:'#140820',col:'#b44dff'},
+];
+let tCur=0;
+function renderT(){
+  const t=testimonials[tCur];
+  document.getElementById('tCard').innerHTML=`
+    <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:16px">
+      <div class="tcard__avatar" style="background:${t.bg};color:${t.col}">${t.init}</div>
+      <div style="flex:1">
+        <div style="font-weight:600;color:var(--text-0);font-size:15px">${t.name}</div>
+        <div style="font-size:13px;color:var(--text-2)">${t.role}</div>
+        <div style="font-family:var(--font-mono);font-size:12px;color:var(--text-3)">${t.handle}</div>
+      </div>
+      <div>
+        <span class="badge badge-gray">${t.tag}</span>
+        <div style="color:var(--neon-orange);font-size:13px;margin-top:6px">${t.stars}</div>
+      </div>
+    </div>
+    <div class="tcard__body">${t.body}</div>
+    <div class="tcard__tag-row">${t.tags.map(tg=>`<span class="badge badge-gray">${tg}</span>`).join('')}</div>
+    ${t.bounty?`<div style="display:flex;align-items:baseline;gap:8px"><div class="tcard__bounty">${t.bounty}</div><div style="font-family:var(--font-mono);font-size:11px;color:var(--text-3)">${t.bountyLabel}</div></div>`:''}
+  `;
+  const dots=document.getElementById('tDots');
+  dots.innerHTML=testimonials.map((_,i)=>`<div class="t-nav-dot${i===tCur?' active':''}" onclick="goT(${i})"></div>`).join('');
+}
+function prevT(){tCur=(tCur-1+testimonials.length)%testimonials.length;renderT();}
+function nextT(){tCur=(tCur+1)%testimonials.length;renderT();}
+function goT(i){tCur=i;renderT();}
+renderT();
+setInterval(nextT,5000);
+</script>
+</body>
+</html>
