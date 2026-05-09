@@ -65,6 +65,9 @@ function buildNav(active) {
       <a href="${b}pages/enroll.html" class="cx-enroll-btn">
         Enroll
       </a>
+      <a href="${b}pages/signup.html" class="cx-enroll-btn">
+        Sign Up
+      </a>
       <a href="${b}pages/signin.html" class="cx-signin-btn" data-page="signin">
         Sign In
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -92,6 +95,9 @@ function buildNav(active) {
         }).join('')}
       </div>
       <div class="cx-mobile-menu__footer">
+        <a href="${b}pages/signup.html" class="btn btn-outline-green" style="width:100%;justify-content:center;margin-bottom:8px">
+          Sign Up →
+        </a>
         <a href="${b}pages/signin.html" class="btn btn-primary" style="width:100%;justify-content:center">
           Sign In →
         </a>
@@ -304,7 +310,7 @@ function toggleMobileMenu() {
   burger.classList.toggle('is-open', open);
   burger.setAttribute('aria-expanded', open);
   menu.setAttribute('aria-hidden', !open);
-  document.body.style.overflow = open ? 'hidden' : '';
+  document.body.style.overflow = open ? 'hidden' : 'auto';
 }
 
 function closeMobileMenu() {
@@ -543,7 +549,7 @@ function injectGlobalStyles() {
 .cx-mobile-menu {
   position:fixed; top:var(--nav-h); left:0; right:0; bottom:0;
   background:rgba(6,9,16,0.98); backdrop-filter:blur(24px);
-  z-index:850; transform:translateX(100%);
+  z-index:9000; transform:translateX(100%);
   transition:transform 0.35s var(--ease);
   overflow-y:auto; display:flex; flex-direction:column;
 }
@@ -750,8 +756,8 @@ function injectGlobalStyles() {
   font-family:var(--font-mono); font-size:9px; letter-spacing:1.5px;
   padding:2px 9px; flex-shrink:0;
 }
-  .cx-enroll-btn {
-  display:inline-flex; align-items:center;
+.cx-enroll-btn {
+  display:none; align-items:center;
   font-family:var(--font-mono); font-size:12px; font-weight:600;
   letter-spacing:0.3px; padding:8px 18px; border-radius:var(--r-md);
   border:1px solid rgba(0,255,136,0.35); color:var(--neon-green);
@@ -761,6 +767,9 @@ function injectGlobalStyles() {
   background:var(--neon-green); color:#000;
   transform:translateY(-1px);
   box-shadow:0 0 20px rgba(0,255,136,0.35);
+}
+@media(min-width:900px) {
+  .cx-enroll-btn { display:inline-flex; }
 }
   `;
   document.head.appendChild(s);

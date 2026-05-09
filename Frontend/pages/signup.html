@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+  <meta name="theme-color" content="#000000"/>
+  <title>Sign Up — CyberX</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"/>
+  <style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --g:#00ff88;--b:#00d4ff;--p:#b44dff;--o:#ff6b00;
+    --bg:#000000;--bg1:#080808;--bg2:#0e0e0e;--bg3:#141414;
+    --t0:#ffffff;--t1:#e2e8f0;--t2:#64748b;--t3:#1e293b;
+    --br:rgba(255,255,255,0.06);--br2:rgba(255,255,255,0.12);
+    --font:'Space Grotesk',sans-serif;--mono:'JetBrains Mono',monospace;
+  }
+  html,body{height:100%;overflow:hidden}
+  body{font-family:var(--font);background:var(--bg);color:var(--t1);-webkit-font-smoothing:antialiased}
+  @media(max-width:900px){html,body{overflow:auto}}
+
+  .wrap{display:grid;grid-template-columns:1fr 480px;min-height:100vh}
+  @media(max-width:900px){.wrap{grid-template-columns:1fr}}
+
+  /* ===== LEFT ===== */
+  .left{position:relative;overflow:hidden;background:var(--bg);display:flex;flex-direction:column;justify-content:space-between;padding:48px 52px}
+  @media(max-width:900px){.left{display:none}}
+  .bg-grid{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(0,255,136,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,0.04) 1px,transparent 1px);background-size:40px 40px}
+  .orb{position:absolute;border-radius:50%;pointer-events:none;filter:blur(70px)}
+  .orb1{width:480px;height:480px;top:-160px;left:-160px;background:radial-gradient(circle,rgba(0,212,255,0.12) 0%,transparent 70%);animation:orbFloat1 9s ease-in-out infinite}
+  .orb2{width:360px;height:360px;bottom:-100px;right:-80px;background:radial-gradient(circle,rgba(0,255,136,0.09) 0%,transparent 70%);animation:orbFloat2 11s ease-in-out infinite}
+  .orb3{width:260px;height:260px;top:40%;left:30%;background:radial-gradient(circle,rgba(180,77,255,0.07) 0%,transparent 70%);animation:orbFloat3 7s ease-in-out infinite}
+  @keyframes orbFloat1{0%,100%{transform:translate(0,0)}50%{transform:translate(30px,20px)}}
+  @keyframes orbFloat2{0%,100%{transform:translate(0,0)}50%{transform:translate(-25px,-15px)}}
+  @keyframes orbFloat3{0%,100%{transform:translate(0,0)}50%{transform:translate(15px,-20px)}}
+  .scanline{position:absolute;left:0;right:0;height:1px;pointer-events:none;z-index:2;background:linear-gradient(90deg,transparent,rgba(0,255,136,0.6),transparent);animation:scan 7s linear infinite}
+  @keyframes scan{from{top:-2px}to{top:100%}}
+  .brand{position:relative;z-index:2;display:flex;align-items:center;gap:12px;text-decoration:none}
+  .hex{width:40px;height:40px;display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0}
+  .hex::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--g),var(--b));clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)}
+  .hex span{position:relative;z-index:1;font-family:var(--mono);font-size:13px;font-weight:700;color:#000}
+  .brand-name{font-size:20px;font-weight:800;color:var(--t0);letter-spacing:-0.02em}
+  .brand-ver{font-size:10px;color:var(--t3);letter-spacing:2px;text-transform:uppercase}
+  .mid{position:relative;z-index:2}
+  .eyebrow{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:3px;text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:10px}
+  .eyebrow::before{content:'';width:24px;height:1px;background:rgba(0,255,136,0.4)}
+  .hero-title{font-size:clamp(36px,4vw,52px);font-weight:800;line-height:1.05;letter-spacing:-0.03em;color:var(--t0);margin-bottom:18px}
+  .grad-text{background:linear-gradient(135deg,var(--g),var(--b));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .hero-desc{font-size:15px;color:var(--t2);line-height:1.7;max-width:360px;margin-bottom:32px}
+  .feats{display:flex;flex-direction:column;gap:10px}
+  .feat{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);transition:all 0.3s;cursor:default}
+  .feat:hover{background:rgba(0,255,136,0.04);border-color:rgba(0,255,136,0.15);transform:translateX(6px)}
+  .feat-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+  .feat-name{font-size:14px;font-weight:600;color:var(--t0);margin-bottom:2px}
+  .feat-sub{font-size:12px;color:var(--t2);line-height:1.4}
+  .live-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--g);box-shadow:0 0 8px var(--g);animation:lp 2s infinite;vertical-align:middle;margin-right:5px}
+  @keyframes lp{0%,100%{opacity:1}50%{opacity:0.4}}
+  .stats-row{position:relative;z-index:2;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,0.06);border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.05)}
+  .stat{background:var(--bg1);padding:16px 10px;text-align:center}
+  .stat-val{font-size:22px;font-weight:800;line-height:1;margin-bottom:4px;letter-spacing:-0.02em}
+  .stat-lbl{font-family:var(--mono);font-size:9px;color:var(--t3);letter-spacing:2px;text-transform:uppercase}
+
+  /* ===== RIGHT ===== */
+  .right{background:var(--bg1);border-left:1px solid var(--br);display:flex;align-items:center;justify-content:center;padding:40px;position:relative;overflow:hidden}
+  .right::before{content:'';position:absolute;top:0;right:0;width:280px;height:280px;pointer-events:none;background:radial-gradient(circle at top right,rgba(0,212,255,0.06),transparent 60%)}
+  .right::after{content:'';position:absolute;bottom:0;left:0;width:280px;height:280px;pointer-events:none;background:radial-gradient(circle at bottom left,rgba(0,255,136,0.04),transparent 60%)}
+  .box{width:100%;max-width:360px;position:relative;z-index:1;animation:fadeUp 0.5s ease forwards}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+  .greeting{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:8px}
+  .form-title{font-size:28px;font-weight:800;color:var(--t0);letter-spacing:-0.02em;margin-bottom:6px}
+  .form-sub{font-size:13px;color:var(--t2);margin-bottom:22px;line-height:1.5}
+
+  /* Fields */
+  .fg{margin-bottom:14px}
+  .fl{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:2px;text-transform:uppercase;display:block;margin-bottom:7px}
+  .fw{position:relative}
+  .fi{width:100%;background:var(--bg2);border:1px solid var(--br);border-radius:10px;padding:13px 14px 13px 42px;font-family:var(--mono);font-size:13px;color:var(--t0);outline:none;transition:border-color 0.2s,box-shadow 0.2s}
+  .fi::placeholder{color:var(--t3)}
+  .fi:focus{border-color:rgba(0,255,136,0.4);box-shadow:0 0 0 3px rgba(0,255,136,0.08)}
+  .fi.err{border-color:rgba(255,50,80,0.5)}
+  .fi.ok{border-color:rgba(0,255,136,0.4)}
+  .fic{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--t3);pointer-events:none;transition:color 0.15s}
+  .fw:focus-within .fic{color:var(--g)}
+  .fpt{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--t3);font-size:15px;padding:4px;line-height:1;transition:color 0.15s}
+  .fpt:hover{color:var(--t0)}
+  .ferr{font-family:var(--mono);font-size:11px;color:#ff3355;margin-top:5px;display:none}
+
+  /* Strength */
+  .pstr{margin-top:8px;display:none}
+  .pstr-bars{display:flex;gap:4px;margin-bottom:4px}
+  .pstr-bar{height:3px;flex:1;border-radius:2px;background:var(--br2);transition:background 0.3s}
+  .pstr-lbl{font-family:var(--mono);font-size:10px;color:var(--t3);transition:color 0.3s}
+
+  /* CTA */
+  .cta{width:100%;padding:15px;font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:0.8px;color:#000;border:none;border-radius:10px;cursor:pointer;margin-bottom:18px;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--g),#00c97a);transition:transform 0.2s,box-shadow 0.2s;display:flex;align-items:center;justify-content:center;gap:8px}
+  .cta:hover{transform:translateY(-2px);box-shadow:0 0 32px rgba(0,255,136,0.4),0 8px 32px rgba(0,0,0,0.5)}
+  .cta:active{transform:scale(0.98)}
+  .cta:disabled{opacity:0.5;cursor:not-allowed;transform:none;box-shadow:none}
+
+  .signin-link{text-align:center;font-size:13px;color:var(--t2);padding-top:16px;border-top:1px solid var(--br)}
+  .signin-link a{color:var(--g);font-weight:600;text-decoration:none}
+  .signin-link a:hover{text-decoration:underline}
+
+  /* ===== OTP MODAL ===== */
+  .modal-backdrop{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,0.88);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s}
+  .modal-backdrop.show{opacity:1;pointer-events:all}
+  .modal{background:var(--bg2);border:1px solid rgba(0,255,136,0.18);border-radius:20px;padding:36px 32px;width:90%;max-width:420px;position:relative;transform:translateY(30px) scale(0.96);transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 40px 80px rgba(0,0,0,0.8),0 0 60px rgba(0,255,136,0.05)}
+  .modal-backdrop.show .modal{transform:translateY(0) scale(1)}
+  .modal-close{position:absolute;top:16px;right:16px;background:none;border:none;color:var(--t3);font-size:20px;cursor:pointer;line-height:1;padding:6px;transition:color 0.15s;border-radius:6px}
+  .modal-close:hover{color:var(--t0);background:rgba(255,255,255,0.05)}
+
+  .modal-icon{width:56px;height:56px;border-radius:16px;background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:16px}
+  .modal-title{font-size:22px;font-weight:800;color:var(--t0);margin-bottom:8px;letter-spacing:-0.02em}
+  .modal-sub{font-family:var(--mono);font-size:12px;color:var(--t2);margin-bottom:28px;line-height:1.8}
+  .modal-email{color:var(--g);font-weight:600}
+
+  /* OTP boxes */
+  .otp-inputs{display:flex;gap:10px;margin-bottom:14px;justify-content:center}
+  .otp-box{width:48px;height:56px;text-align:center;font-family:var(--mono);font-size:22px;font-weight:700;color:var(--t0);background:var(--bg3);border:1px solid var(--br);border-radius:12px;outline:none;transition:all 0.2s;caret-color:var(--g)}
+  .otp-box:focus{border-color:rgba(0,255,136,0.5);box-shadow:0 0 0 3px rgba(0,255,136,0.1);background:#1a1a1a}
+  .otp-box.filled{border-color:rgba(0,255,136,0.4);color:var(--g)}
+  .otp-box.err{border-color:rgba(255,50,80,0.6);animation:shake 0.35s ease}
+
+  .otp-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
+  .otp-timer{font-family:var(--mono);font-size:11px;color:var(--t3)}
+  .otp-timer b{color:var(--b)}
+  .otp-resend{font-family:var(--mono);font-size:11px;color:var(--b);background:none;border:none;cursor:pointer;padding:0;transition:opacity 0.2s}
+  .otp-resend:disabled{opacity:0.35;cursor:not-allowed}
+  .otp-resend:not(:disabled):hover{text-decoration:underline}
+
+  .verify-btn{width:100%;padding:15px;font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:0.8px;color:#000;border:none;border-radius:10px;cursor:pointer;background:linear-gradient(135deg,var(--g),#00c97a);transition:transform 0.2s,box-shadow 0.2s}
+  .verify-btn:hover{transform:translateY(-1px);box-shadow:0 0 28px rgba(0,255,136,0.4)}
+  .verify-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+
+  /* Toast */
+  .toast{position:fixed;bottom:24px;right:24px;z-index:9999;background:var(--bg2);border:1px solid var(--br2);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:12px;box-shadow:0 20px 60px rgba(0,0,0,0.8);font-size:13px;color:var(--t1);font-family:var(--font);transform:translateY(80px) scale(0.95);opacity:0;transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);pointer-events:none}
+  .toast.on{transform:translateY(0) scale(1);opacity:1}
+  .toast-icon{font-size:20px}
+  .toast-bar{position:absolute;bottom:0;left:0;height:2px;border-radius:0 0 12px 12px;animation:tbar 3.2s linear forwards}
+  @keyframes tbar{from{width:100%}to{width:0}}
+
+  /* Success */
+  .success-overlay{position:absolute;inset:0;background:var(--bg1);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:10;opacity:0;pointer-events:none;transition:opacity 0.4s}
+  .success-overlay.on{opacity:1;pointer-events:all}
+  .success-hex{width:72px;height:72px;position:relative;display:flex;align-items:center;justify-content:center;animation:spinHex 1.2s ease forwards}
+  .success-hex::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--g),var(--b));clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)}
+  .success-hex span{position:relative;z-index:1;font-size:28px}
+  @keyframes spinHex{from{transform:rotate(-90deg) scale(0.5);opacity:0}to{transform:rotate(0deg) scale(1);opacity:1}}
+  .success-title{font-size:22px;font-weight:800;color:var(--t0)}
+  .success-sub{font-size:14px;color:var(--t2)}
+
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+  </style>
+</head>
+<body>
+
+<div class="wrap">
+  <!-- ===== LEFT ===== -->
+  <div class="left">
+    <div class="bg-grid"></div>
+    <div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div>
+    <div class="scanline"></div>
+    <a href="../index.html" class="brand">
+      <div class="hex"><span>CX</span></div>
+      <div>
+        <div class="brand-name">CyberX</div>
+        <div class="brand-ver">v4.2.1</div>
+      </div>
+    </a>
+    <div class="mid">
+      <div class="eyebrow">New recruit</div>
+      <h1 class="hero-title">Join the<br><span class="grad-text">operator</span><br>network.</h1>
+      <p class="hero-desc">Start free. Access 96 live labs, Season IV CTF challenges, and a complete offensive security knowledge base — no card required.</p>
+      <div class="feats">
+        <div class="feat">
+          <div class="feat-icon" style="background:rgba(0,255,136,0.1);color:var(--g)">🛡</div>
+          <div><div class="feat-name">Free Tier — Always Available</div><div class="feat-sub">5 labs, 20 CTF challenges, read-only Codex access</div></div>
+        </div>
+        <div class="feat">
+          <div class="feat-icon" style="background:rgba(0,212,255,0.1);color:var(--b)">⚡</div>
+          <div><div class="feat-name">Instant Lab Spin-Up</div><div class="feat-sub">Browser-based · no setup · live in &lt;30s</div></div>
+        </div>
+        <div class="feat">
+          <div class="feat-icon" style="background:rgba(180,77,255,0.1);color:var(--p)">🏆</div>
+          <div><div class="feat-name">Ranked from Day One</div><div class="feat-sub"><span class="live-dot"></span>38 operators competing now</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="stats-row">
+      <div class="stat"><div class="stat-val" style="background:linear-gradient(90deg,var(--g),var(--b));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">12K+</div><div class="stat-lbl">Members</div></div>
+      <div class="stat"><div class="stat-val" style="background:linear-gradient(90deg,var(--b),var(--p));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">380+</div><div class="stat-lbl">Challenges</div></div>
+      <div class="stat"><div class="stat-val" style="background:linear-gradient(90deg,var(--o),var(--g));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">5.0★</div><div class="stat-lbl">Rating</div></div>
+    </div>
+  </div>
+
+  <!-- ===== RIGHT ===== -->
+  <div class="right">
+    <div class="success-overlay" id="successOverlay">
+      <div class="success-hex"><span>✓</span></div>
+      <div class="success-title">Operator Created</div>
+      <div class="success-sub">Welcome aboard. Initialising workspace…</div>
+    </div>
+
+    <div class="box">
+      <div class="greeting">// New operator registration</div>
+      <h2 class="form-title">Create your account</h2>
+      <p class="form-sub">Fill in your details. We'll send an OTP to verify your email.</p>
+
+      <!-- STEP 1: Name -->
+      <div class="fg">
+        <label class="fl">Name</label>
+        <div class="fw">
+          <span class="fic">👤</span>
+          <input class="fi" type="text" id="name" placeholder="Your Name" oninput="clearErr('name','nameErr')"/>
+        </div>
+        <div class="ferr" id="nameErr">Please enter your full name (min 2 characters).</div>
+      </div>
+
+      <!-- STEP 2: Email -->
+      <div class="fg">
+        <label class="fl">Email Address</label>
+        <div class="fw">
+          <span class="fic">✉</span>
+          <input class="fi" type="email" id="email" placeholder="example@gmail.com" oninput="clearErr('email','emailErr')"/>
+        </div>
+        <div class="ferr" id="emailErr">Enter a valid email address.</div>
+      </div>
+
+      <!-- STEP 3: Password -->
+      <div class="fg">
+        <label class="fl">Password</label>
+        <div class="fw">
+          <span class="fic">🔒</span>
+          <input class="fi" type="password" id="pass" placeholder="••••••••••••" oninput="onPassInput()"/>
+          <button class="fpt" onclick="togglePass('pass','ptgl1')" id="ptgl1">👁</button>
+        </div>
+        <div class="ferr" id="passErr">Password must be at least 8 characters.</div>
+        <div class="pstr" id="pstr">
+          <div class="pstr-bars">
+            <div class="pstr-bar" id="pb1"></div>
+            <div class="pstr-bar" id="pb2"></div>
+            <div class="pstr-bar" id="pb3"></div>
+            <div class="pstr-bar" id="pb4"></div>
+          </div>
+          <div class="pstr-lbl" id="pstrLbl"></div>
+        </div>
+      </div>
+
+      <!-- STEP 4: Confirm Password -->
+      <div class="fg">
+        <label class="fl">Confirm Password</label>
+        <div class="fw">
+          <span class="fic">🔒</span>
+          <input class="fi" type="password" id="passConfirm" placeholder="••••••••••••" oninput="onConfirmInput()"/>
+          <button class="fpt" onclick="togglePass('passConfirm','ptgl2')" id="ptgl2">👁</button>
+        </div>
+        <div class="ferr" id="confirmErr">Passwords do not match.</div>
+      </div>
+
+      <!-- Create Account button → triggers OTP modal -->
+      <button class="cta" id="ctaBtn" onclick="createAccount()">
+        <span id="ctaTxt">Create Account →</span>
+      </button>
+
+      <div class="signin-link">Already have an account? <a href="signin.html">Sign in →</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== OTP MODAL ===== -->
+<div class="modal-backdrop" id="otpModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()" title="Close">✕</button>
+    <div class="modal-icon">📧</div>
+    <div class="modal-title">Verify your email</div>
+    <div class="modal-sub">
+      A 6-digit code was sent to<br>
+      <span class="modal-email" id="modalEmail"></span><br>
+      Enter it below to activate your account.
+    </div>
+
+    <div class="otp-inputs">
+      <input class="otp-box" type="text" inputmode="numeric" maxlength="1" id="otp0" oninput="otpInput(0)" onkeydown="otpKey(event,0)"/>
+      <input class="otp-box" type="text" inputmode="numeric" maxlength="1" id="otp1" oninput="otpInput(1)" onkeydown="otpKey(event,1)"/>
+      <input class="otp-box" type="text" inputmode="numeric" maxlength="1" id="otp2" oninput="otpInput(2)" onkeydown="otpKey(event,2)"/>
+      <input class="otp-box" type="text" inputmode="numeric" maxlength="1" id="otp3" oninput="otpInput(3)" onkeydown="otpKey(event,3)"/>
+      <input class="otp-box" type="text" inputmode="numeric" maxlength="1" id="otp4" oninput="otpInput(4)" onkeydown="otpKey(event,4)"/>
+      <input class="otp-box" type="text" inputmode="numeric" maxlength="1" id="otp5" oninput="otpInput(5)" onkeydown="otpKey(event,5)"/>
+    </div>
+
+    <div class="otp-meta">
+      <div class="otp-timer">Expires in <b id="timerDisplay">02:00</b></div>
+      <button class="otp-resend" id="resendBtn" onclick="resendOTP()" disabled>Resend code</button>
+    </div>
+
+    <button class="verify-btn" id="verifyBtn" onclick="verifyOTP()">Verify &amp; Activate →</button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <span class="toast-icon" id="tIcon">ℹ</span>
+  <span id="tMsg"></span>
+  <div class="toast-bar" id="tBar"></div>
+</div>
+
+<script>
+let generatedOTP = '';
+let timerInterval = null;
+let timerSeconds = 120;
+
+/* ── Toast ── */
+function toast(msg, icon, color) {
+  const el = document.getElementById('toast');
+  const bar = document.getElementById('tBar');
+  document.getElementById('tMsg').textContent = msg;
+  document.getElementById('tIcon').textContent = icon || 'ℹ';
+  bar.style.background = color || 'var(--g)';
+  bar.style.animation = 'none'; void bar.offsetWidth;
+  bar.style.animation = 'tbar 3.2s linear forwards';
+  el.classList.add('on');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('on'), 3500);
+}
+
+/* ── Field helpers ── */
+function clearErr(id, errId) {
+  document.getElementById(id).classList.remove('err');
+  document.getElementById(errId).style.display = 'none';
+}
+
+function togglePass(id, btnId) {
+  const i = document.getElementById(id), b = document.getElementById(btnId);
+  i.type = i.type === 'password' ? 'text' : 'password';
+  b.textContent = i.type === 'password' ? '👁' : '🙈';
+}
+
+/* ── Password strength ── */
+function onPassInput() {
+  const v = document.getElementById('pass').value;
+  clearErr('pass', 'passErr');
+  document.getElementById('pstr').style.display = v ? 'block' : 'none';
+  let score = 0;
+  if (v.length >= 8) score++;
+  if (/[A-Z]/.test(v)) score++;
+  if (/[0-9]/.test(v)) score++;
+  if (/[!@#$%^&*]/.test(v)) score++;
+  const colors = ['#ff3355', '#ff6b00', 'var(--b)', 'var(--g)'];
+  const labels = ['Weak', 'Fair', 'Good', 'Strong'];
+  for (let i = 1; i <= 4; i++)
+    document.getElementById('pb' + i).style.background = i <= score ? colors[score - 1] : 'var(--br2)';
+  const lbl = document.getElementById('pstrLbl');
+  lbl.textContent = score ? labels[score - 1] : '';
+  lbl.style.color = score ? colors[score - 1] : 'var(--t3)';
+  if (document.getElementById('passConfirm').value) onConfirmInput();
+}
+
+function onConfirmInput() {
+  const p1 = document.getElementById('pass').value;
+  const p2 = document.getElementById('passConfirm').value;
+  const el = document.getElementById('passConfirm');
+  const err = document.getElementById('confirmErr');
+  if (!p2) { el.classList.remove('err', 'ok'); err.style.display = 'none'; return; }
+  if (p1 === p2) { el.classList.remove('err'); el.classList.add('ok'); err.style.display = 'none'; }
+  else { el.classList.add('err'); el.classList.remove('ok'); err.style.display = 'block'; }
+}
+
+/* ── Validate all fields ── */
+function validateForm() {
+  let ok = true;
+  const name    = document.getElementById('name').value.trim();
+  const email   = document.getElementById('email').value.trim();
+  const pass    = document.getElementById('pass').value;
+  const confirm = document.getElementById('passConfirm').value;
+
+  if (name.length < 2) {
+    document.getElementById('name').classList.add('err');
+    document.getElementById('nameErr').style.display = 'block'; ok = false;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    document.getElementById('email').classList.add('err');
+    document.getElementById('emailErr').style.display = 'block'; ok = false;
+  }
+  if (pass.length < 8) {
+    document.getElementById('pass').classList.add('err');
+    document.getElementById('passErr').style.display = 'block'; ok = false;
+  }
+  if (!confirm || pass !== confirm) {
+    document.getElementById('passConfirm').classList.add('err');
+    document.getElementById('confirmErr').style.display = 'block'; ok = false;
+  }
+  return ok;
+}
+
+/* ── Create Account button click ── */
+function createAccount() {
+  if (!validateForm()) { toast('Please fix the errors above.', '⚠', '#ff6b00'); return; }
+
+  const btn = document.getElementById('ctaBtn');
+  const txt = document.getElementById('ctaTxt');
+  btn.disabled = true;
+  txt.textContent = 'Sending OTP…';
+
+  // Generate OTP — replace with real backend API call in production
+  generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
+
+  setTimeout(() => {
+    btn.disabled = false;
+    txt.textContent = 'Create Account →';
+
+    const email = document.getElementById('email').value.trim();
+    document.getElementById('modalEmail').textContent = email;
+
+    openModal();
+    startTimer();
+
+    // ⚠ DEMO ONLY — remove this toast when backend is connected
+    toast('Demo OTP: ' + generatedOTP, '📧', 'var(--b)');
+  }, 900);
+}
+
+/* ── Modal ── */
+function openModal() {
+  for (let i = 0; i < 6; i++) {
+    const b = document.getElementById('otp' + i);
+    b.value = ''; b.classList.remove('filled', 'err');
+  }
+  document.getElementById('otpModal').classList.add('show');
+  setTimeout(() => document.getElementById('otp0').focus(), 300);
+}
+
+function closeModal() {
+  document.getElementById('otpModal').classList.remove('show');
+  clearInterval(timerInterval);
+}
+
+/* ── Timer ── */
+function startTimer() {
+  clearInterval(timerInterval);
+  timerSeconds = 120;
+  document.getElementById('resendBtn').disabled = true;
+  updateTimer();
+  timerInterval = setInterval(() => {
+    timerSeconds--;
+    updateTimer();
+    if (timerSeconds <= 0) {
+      clearInterval(timerInterval);
+      document.getElementById('timerDisplay').textContent = '00:00';
+      document.getElementById('resendBtn').disabled = false;
+    }
+  }, 1000);
+}
+
+function updateTimer() {
+  const m = Math.floor(timerSeconds / 60).toString().padStart(2, '0');
+  const s = (timerSeconds % 60).toString().padStart(2, '0');
+  document.getElementById('timerDisplay').textContent = m + ':' + s;
+}
+
+function resendOTP() {
+  generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
+  for (let i = 0; i < 6; i++) {
+    const b = document.getElementById('otp' + i);
+    b.value = ''; b.classList.remove('filled', 'err');
+  }
+  document.getElementById('otp0').focus();
+  startTimer();
+  toast('New OTP sent! Demo: ' + generatedOTP, '📧', 'var(--b)');
+}
+
+/* ── OTP box input ── */
+function otpInput(idx) {
+  const box = document.getElementById('otp' + idx);
+  const val = box.value.replace(/[^0-9]/g, '');
+  box.value = val;
+  box.classList.remove('err');
+  if (val) {
+    box.classList.add('filled');
+    if (idx < 5) document.getElementById('otp' + (idx + 1)).focus();
+  } else {
+    box.classList.remove('filled');
+  }
+}
+
+function otpKey(e, idx) {
+  if (e.key === 'Backspace' && !document.getElementById('otp' + idx).value && idx > 0)
+    document.getElementById('otp' + (idx - 1)).focus();
+}
+
+document.addEventListener('paste', function (e) {
+  if (!document.activeElement.classList.contains('otp-box')) return;
+  const text = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '').slice(0, 6);
+  if (text.length >= 1) {
+    e.preventDefault();
+    for (let i = 0; i < 6; i++) {
+      const b = document.getElementById('otp' + i);
+      b.value = text[i] || '';
+      if (text[i]) b.classList.add('filled'); else b.classList.remove('filled');
+    }
+  }
+});
+
+/* ── Verify OTP ── */
+function verifyOTP() {
+  let entered = '';
+  for (let i = 0; i < 6; i++) entered += document.getElementById('otp' + i).value;
+  if (entered.length < 6) { toast('Please enter all 6 digits.', '⚠', '#ff6b00'); return; }
+
+  const btn = document.getElementById('verifyBtn');
+  btn.disabled = true; btn.textContent = 'Verifying…';
+
+  setTimeout(() => {
+    if (entered === generatedOTP) {
+      clearInterval(timerInterval);
+      closeModal();
+      toast('Email verified! Account created.', '✅', 'var(--g)');
+      setTimeout(() => {
+        document.getElementById('successOverlay').classList.add('on');
+        setTimeout(() => { window.location.href = '../index.html'; }, 1800);
+      }, 500);
+    } else {
+      for (let i = 0; i < 6; i++) document.getElementById('otp' + i).classList.add('err');
+      toast('Wrong OTP. Try again.', '❌', '#ff3355');
+      btn.disabled = false; btn.textContent = 'Verify & Activate →';
+    }
+  }, 700);
+}
+
+// Close modal on backdrop click
+document.getElementById('otpModal').addEventListener('click', function (e) {
+  if (e.target === this) closeModal();
+});
+</script>
+</body>
+</html>
