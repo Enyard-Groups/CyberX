@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 // ── Config ──────────────────────────────────────────────────────────────────
-const API = 'http://localhost:4000/api'   // change to deployed URL in production
+const API = import.meta.env.VITE_API_URL
 
 // ── Tiny helpers ────────────────────────────────────────────────────────────
 const mono = { fontFamily: 'var(--font-mono)' }
@@ -14,6 +14,7 @@ function Field({ label, type, placeholder, pre, hint, value, onChange, disabled 
       <div style={{ display:'flex', border:'1px solid rgba(255,255,255,0.08)', borderRadius:'var(--r-md)', overflow:'hidden', background:'rgba(255,255,255,0.02)', opacity: disabled ? 0.5 : 1 }}>
         <span style={{ padding:'0 14px', ...mono, fontSize:'13px', color:'var(--text-3)', borderRight:'1px solid rgba(255,255,255,0.06)', display:'flex', alignItems:'center', background:'rgba(255,255,255,0.02)' }}>{pre}</span>
         <input type={type} placeholder={placeholder} value={value} onChange={onChange} disabled={disabled}
+          autoComplete="off"
           style={{ flex:1, background:'transparent', border:'none', outline:'none', padding:'13px 14px', ...mono, fontSize:'13px', color:'var(--text-1)' }} />
       </div>
       {hint && <div style={{ ...mono, fontSize:'11px', color:'var(--text-4)', marginTop:'6px' }}>{hint}</div>}
@@ -24,7 +25,6 @@ function Field({ label, type, placeholder, pre, hint, value, onChange, disabled 
 // ── Main Component ──────────────────────────────────────────────────────────
 export default function SignUp() {
 
-  // step: 'form' | 'otp' | 'done'
   const [step, setStep]           = useState('form')
   const navigate                  = useNavigate()
   const [form, setForm]           = useState({ handle:'', email:'', password:'', confirm:'' })
@@ -39,14 +39,12 @@ export default function SignUp() {
   const timerRef  = useRef(null)
   const set = k => e => setForm(f => ({ ...f, [k]: e.target.value }))
 
-  // countdown timer for resend
   useEffect(() => {
     if (countdown <= 0) return
     timerRef.current = setTimeout(() => setCountdown(c => c - 1), 1000)
     return () => clearTimeout(timerRef.current)
   }, [countdown])
 
-  // ── Step 1: Submit form & send OTP ────────────────────────────────────────
   async function handleSendOTP() {
     setError(''); setInfo('')
     if (!form.handle.trim())            return setError('Please enter your name.')
@@ -70,7 +68,6 @@ export default function SignUp() {
     } finally { setLoading(false) }
   }
 
-  // ── Step 2: Verify OTP then register ─────────────────────────────────────
   async function handleVerifyOTP() {
     setError(''); setInfo('')
     const otp = otpDigits.join('')
@@ -78,7 +75,6 @@ export default function SignUp() {
 
     setLoading(true)
     try {
-      // 1️⃣ Verify OTP
       const verifyRes  = await fetch(`${API}/verify-otp`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: form.email, otp }),
@@ -86,7 +82,6 @@ export default function SignUp() {
       const verifyData = await verifyRes.json()
       if (!verifyData.success) throw new Error(verifyData.message)
 
-      // 2️⃣ Register user in PostgreSQL
       const regRes  = await fetch(`${API}/register`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: form.handle, email: form.email, password: form.password }),
@@ -104,7 +99,6 @@ export default function SignUp() {
     } finally { setLoading(false) }
   }
 
-  // ── Resend OTP ────────────────────────────────────────────────────────────
   async function handleResend() {
     if (countdown > 0) return
     setError(''); setInfo(''); setLoading(true)
@@ -123,7 +117,6 @@ export default function SignUp() {
     } finally { setLoading(false) }
   }
 
-  // ── OTP digit handlers ────────────────────────────────────────────────────
   function handleDigit(i, val) {
     const d = val.replace(/\D/g,'').slice(-1)
     const next = [...otpDigits]; next[i] = d; setOtpDigits(next)
@@ -144,14 +137,12 @@ export default function SignUp() {
     inputRefs.current[Math.min(text.length,5)]?.focus()
   }
 
-  // ── Shared shell ──────────────────────────────────────────────────────────
   return (
     <div style={{minHeight:'100vh',background:'var(--bg-0)',display:'flex',alignItems:'center',justifyContent:'center',padding:'40px 20px',position:'relative',overflow:'hidden'}}>
       <div style={{position:'absolute',width:'600px',height:'600px',top:'-200px',left:'-200px',borderRadius:'50%',background:'radial-gradient(circle,rgba(0,255,136,0.07) 0%,transparent 70%)',pointerEvents:'none'}}/>
       <div style={{position:'absolute',width:'600px',height:'600px',bottom:'-200px',right:'-200px',borderRadius:'50%',background:'radial-gradient(circle,rgba(180,77,255,0.05) 0%,transparent 70%)',pointerEvents:'none'}}/>
 
       <div style={{width:'100%',maxWidth:'480px',position:'relative',zIndex:1}}>
-        {/* Logo */}
         <Link to="/" style={{display:'flex',alignItems:'center',gap:'10px',marginBottom:'36px',textDecoration:'none',justifyContent:'center'}}>
           <div style={{width:'40px',height:'40px',display:'flex',alignItems:'center',justifyContent:'center',position:'relative'}}>
             <div style={{position:'absolute',inset:0,background:'linear-gradient(135deg,var(--neon-green),var(--neon-blue))',clipPath:'polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)'}}/>
@@ -163,10 +154,8 @@ export default function SignUp() {
           </div>
         </Link>
 
-        {/* Card */}
         <div style={{background:'var(--bg-2)',border:'1px solid rgba(255,255,255,0.07)',borderRadius:'var(--r-xl)',padding:'40px',boxShadow:'0 40px 80px rgba(0,0,0,0.5)'}}>
 
-          {/* Step indicator */}
           {step !== 'done' && (
             <div style={{display:'flex',alignItems:'center',gap:'8px',marginBottom:'28px'}}>
               {['form','otp'].map((s,idx) => (
@@ -190,7 +179,6 @@ export default function SignUp() {
             </div>
           )}
 
-          {/* ── STEP: FORM ─────────────────────────────────────── */}
           {step==='form' && (
             <>
               <div style={{display:'flex',alignItems:'center',gap:'8px',background:'rgba(0,255,136,0.06)',border:'1px solid rgba(0,255,136,0.15)',borderRadius:'var(--r-md)',padding:'10px 14px',marginBottom:'24px'}}>
@@ -232,7 +220,6 @@ export default function SignUp() {
             </>
           )}
 
-          {/* ── STEP: OTP ──────────────────────────────────────── */}
           {step==='otp' && (
             <>
               <h1 style={{fontFamily:'var(--font-display)',fontSize:'24px',fontWeight:700,color:'var(--text-0)',marginBottom:'8px'}}>Check your inbox.</h1>
@@ -241,7 +228,6 @@ export default function SignUp() {
                 <span style={{color:'var(--neon-green)'}}>{form.email}</span>
               </p>
 
-              {/* OTP digit boxes */}
               <div style={{display:'flex',gap:'10px',justifyContent:'center',marginBottom:'24px'}}>
                 {otpDigits.map((d,i) => (
                   <input key={i} ref={el => inputRefs.current[i]=el}
@@ -279,7 +265,6 @@ export default function SignUp() {
             </>
           )}
 
-          {/* ── STEP: DONE ─────────────────────────────────────── */}
           {step==='done' && (
             <div style={{textAlign:'center',padding:'16px 0'}}>
               <div style={{fontSize:'56px',marginBottom:'16px'}}>🎉</div>
@@ -293,8 +278,9 @@ export default function SignUp() {
                   Operator ID: <span style={{color:'var(--text-2)'}}>#{createdUser.id}</span>
                 </p>
               )}
+              {/* ✅ Go directly to home, already logged in */}
               <button className="btn btn-primary btn-lg" style={{width:'100%',justifyContent:'center'}} onClick={()=>navigate('/')}>
-                Sign In to Your Account →
+                Go to Home →
               </button>
             </div>
           )}
