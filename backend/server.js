@@ -1,15 +1,6 @@
 /**
- * CyberX – OTP + Auth Server
- * Stack: Node.js + Express + Nodemailer + PostgreSQL (pg)
- *
- * Endpoints:
- *   POST /api/send-otp          – generates & emails a 6-digit OTP
- *   POST /api/verify-otp        – checks the OTP the user typed
- *   POST /api/register          – saves verified user to PostgreSQL
- *   POST /api/signin            – authenticate existing user
- *   POST /api/forgot-password   – sends password reset OTP
- *   POST /api/verify-reset-otp  – verifies reset OTP
- *   POST /api/reset-password    – updates password in PostgreSQL
+ * CyberX – Auth Server
+ * Node.js + Express + PostgreSQL + Nodemailer
  */
 
 import express    from 'express'

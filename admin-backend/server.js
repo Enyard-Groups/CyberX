@@ -1,16 +1,6 @@
 /**
  * CyberX – Admin Backend Server
  * Stack: Node.js + Express + PostgreSQL + JWT
- *
- * Endpoints:
- *   POST /api/admin/login        – admin login
- *   GET  /api/admin/dashboard    – dashboard stats
- *   GET  /api/admin/users        – list all users
- *   DELETE /api/admin/users/:id  – delete a user
- *   GET  /api/admin/lectures     – list all lectures
- *   POST /api/admin/lectures     – add a lecture
- *   PUT  /api/admin/lectures/:id – update a lecture
- *   DELETE /api/admin/lectures/:id – delete a lecture
  */
 
 import express  from 'express'
