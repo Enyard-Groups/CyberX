@@ -13,6 +13,7 @@ import Pricing from './pages/Pricing'
 import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
 import Enroll from './pages/Enroll'
+import ChatWidget from './components/ChatWidget'
 
 function Layout({ children, activePage = '' }) {
   return (
@@ -21,6 +22,7 @@ function Layout({ children, activePage = '' }) {
       <Navbar activePage={activePage} />
       <main>{children}</main>
       <Footer />
+      <ChatWidget />
     </>
   )
 }
