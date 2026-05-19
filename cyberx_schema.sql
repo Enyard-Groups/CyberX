@@ -1,0 +1,67 @@
+CREATE TABLE IF NOT EXISTS admins (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS users (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS codex_articles (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    content TEXT,
+    category VARCHAR(100) DEFAULT 'General',
+    author VARCHAR(100),
+    status VARCHAR(50) DEFAULT 'Draft',
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS ctf_challenges (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    category VARCHAR(100) DEFAULT 'General',
+    difficulty VARCHAR(50) DEFAULT 'Easy',
+    points INTEGER DEFAULT 100,
+    flag VARCHAR(255),
+    status VARCHAR(50) DEFAULT 'Active',
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS labs (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    category VARCHAR(100) DEFAULT 'General',
+    difficulty VARCHAR(50) DEFAULT 'Easy',
+    duration VARCHAR(50),
+    status VARCHAR(50) DEFAULT 'Draft',
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS lectures (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    instructor VARCHAR(100),
+    duration VARCHAR(50),
+    level VARCHAR(50) DEFAULT 'Beginner',
+    status VARCHAR(50) DEFAULT 'Draft',
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS leaderboard (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    points INTEGER DEFAULT 0,
+    solved INTEGER DEFAULT 0,
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
